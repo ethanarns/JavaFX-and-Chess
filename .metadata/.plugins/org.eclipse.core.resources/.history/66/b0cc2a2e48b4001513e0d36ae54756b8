@@ -27,12 +27,6 @@ import javafx.stage.Stage;
 import us.pecon.ray.chessPlay.ChessBoard;
 import us.pecon.ray.chessPlay.Piece;
 
-/**
- * I have officially begun using GitHub, and this lame, un-original little
- * project will be my first go at it.
- * 
- * @author ethanarns
- */
 public class ChessPlayGui extends Application {
 	
 	/*
@@ -48,9 +42,7 @@ public class ChessPlayGui extends Application {
 	private Button exitButton;
 	
 	private ChessBoard chess;
-	
 	/*
-	 * fun fact: todo get recognized by Eclipse and can be accessed in a window
 	 * TODO: Graphics
 	 * TODO: Super advanced AI that breaks all records?
 	 */
@@ -92,7 +84,9 @@ public class ChessPlayGui extends Application {
 	    primaryStage.setScene(new Scene(borderPane, 800,600));
 	    updateBoard();
 	    primaryStage.show();
-	    
+	    chess.move_hr("E2-E4");
+	    chess.move_hr("E7-E5");
+	    chess.move_hr("E4-E5");
 	    updateBoard();
 	}
 	
@@ -256,11 +250,6 @@ public class ChessPlayGui extends Application {
 		return " ";
 	}
 	
-	/**
-	 * A safe method of stopping. System.exit() works too, but with
-	 * Platform.exit(), this little method gets called, and allows for things
-	 * like saving on close etc. Very useful.
-	 */
 	@Override
 	public void stop(){
 		if(chess.isDebug())

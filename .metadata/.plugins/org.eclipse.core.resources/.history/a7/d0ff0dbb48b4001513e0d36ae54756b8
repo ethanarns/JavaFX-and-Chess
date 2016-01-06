@@ -19,6 +19,27 @@ public class ChessBoard {
 	private boolean isGameOver;
 	private boolean verbose;
 	
+	/*  <<<This is including scanner loop>>>
+	 * ChessBoard chess = new ChessBoard();
+System.out.println("Welcome to Chess! This is a two-person\nhand-off game with movement rules\nenforced. Type 'help' for more info.");
+@SuppressWarnings("resource")
+Scanner inputScan = new Scanner(System.in);
+chess.resetBoard();
+System.out.println(" ---Game start!--- \n");
+chess.printBoardState_hr();
+System.out.println("It is White's turn.");
+boolean gameOver = false;
+
+while(!gameOver){
+	System.out.print("> ");
+	String input = inputScan.nextLine();
+	System.out.println();
+	chess.move_hr(input);
+	if(chess.isGameOver())
+		gameOver = true;
+}
+	 */
+	
 	/**
 	 * Chess board class constructor. Sets current turn to white and initiates
 	 * the two other variables blank

@@ -256,11 +256,6 @@ public class ChessPlayGui extends Application {
 		return " ";
 	}
 	
-	/**
-	 * A safe method of stopping. System.exit() works too, but with
-	 * Platform.exit(), this little method gets called, and allows for things
-	 * like saving on close etc. Very useful.
-	 */
 	@Override
 	public void stop(){
 		if(chess.isDebug())
