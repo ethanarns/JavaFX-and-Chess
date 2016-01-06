@@ -44,9 +44,7 @@ public class ChessPlayGui extends Application {
 	private ChessBoard chess;
 	/*
 	 * TODO: Graphics
-	 * Maybe someday, I'll make an AI? Who knows. It's not like modern
-	 * computers can't handle a jillion times more calculations than 80s
-	 * chess machines
+	 * TODO: Super advanced AI that breaks all records?
 	 */
 	public static void main(String[] args) {
 		launch(args);
