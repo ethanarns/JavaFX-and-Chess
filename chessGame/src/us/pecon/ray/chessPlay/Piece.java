@@ -11,7 +11,6 @@ public abstract class Piece {
 
 	protected String color;
 	protected Position position;
-	private int moveCount;
 	
 	/**
 	 * Constructor by coordinates
@@ -23,7 +22,6 @@ public abstract class Piece {
 	public Piece(String color, int xPos, int yPos){
 		this.color = color;
 		this.position = new Position(xPos, yPos);
-		this.moveCount = 0;
 	}
 	
 	/**
@@ -35,7 +33,6 @@ public abstract class Piece {
 	public Piece(String color, Position position){
 		this.color = color;
 		this.position = position;
-		this.moveCount = 0;
 	}
 	
 	/**
@@ -69,12 +66,6 @@ public abstract class Piece {
 	public void setPosition(int x, int y){
 		this.position.setXpos(x);
 		this.position.setYpos(y);
-	}
-	public int getMoveCount(){
-		return moveCount;
-	}
-	public void setMoveCount(int num){
-		moveCount = num;
 	}
 	
 	public String toString(){

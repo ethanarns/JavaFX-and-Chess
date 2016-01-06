@@ -346,21 +346,23 @@ public class ChessBoard {
 	
 	/**
 	 * Moves a piece by advancing it according to the offset specified by x and
-	 * y parameters. Also determines capture
+	 * y parameters. Also determines capture. Returns true if successful.
+	 * 
 	 * @param p  the piece selected to be moved
 	 * @param x  how far left or right to move
 	 * @param y  how far up or down to move
+	 * @return   true if move was successful, false if not
 	 */
-	public void move(Piece p, int x, int y){
+	public boolean move(Piece p, int x, int y){
 		if(p.getXpos() > 7 || p.getXpos() < 0 || p.getYpos() > 7 || p.getYpos() < 0 || p == null){
 			if(verbose)
 				System.out.println("Invalid piece position.");
-			return;
+			return false;
 		}
 		if(p instanceof Blank){
 			if(verbose)
 				System.out.println("Bad move! You cannot move a blank space.");
-			return;
+			return false;
 		}
 		//set old position (for blank placement purposes
 		Position oldPos = new Position(p.getXpos(), p.getYpos());
@@ -369,13 +371,13 @@ public class ChessBoard {
 		if(oldPos == null || newPiece == null){
 			if(verbose)
 				System.out.println("Invalid creation of pieces during move()");
-			return;
+			return false;
 		}
 		//Is it the same color?
 		if(newPiece.getColor().equalsIgnoreCase(p.getColor())){
 			if(verbose)
 				System.out.println("Bad move! Can't land on same color.");
-			return;
+			return false;
 		}
 
 		//capture logic
@@ -386,13 +388,13 @@ public class ChessBoard {
 		if(!moveCheckAssigner(p,x,y)){
 			if(verbose)
 				System.out.println("Bad move! Illegal move for " + p.getClass().getSimpleName() + ".");
-			return;
+			return false;
 		}
 		
 		if(newPiece instanceof King){
 			if(verbose)
 				System.out.println("Bad move! Kings cannot be captured.");
-			return;
+			return false;
 		}
 		
 		//Everything checks out, so set the piece's position anew
@@ -408,6 +410,7 @@ public class ChessBoard {
 			if(verbose)
 				System.out.println(p.getColor() + " " + p.getClass().getSimpleName() + " moved to (" + newPiece.getXpos() + ", " + newPiece.getYpos() + ")\n");
 		}
+		return true;
 	}
 	
 	/**
@@ -866,11 +869,10 @@ public class ChessBoard {
 	private boolean moveCheck_pawn(Piece p, int relX, int relY){
 		if(p.getColor().equalsIgnoreCase("black")){
 			//basic advance
-			if(relX == 0 && relY == -1 && !getPieceRelative(p,relX,relY).getColor().equalsIgnoreCase("black"))
+			if(relX == 0 && relY == -1 && !getPieceRelative(p,relX,relY).getColor().equalsIgnoreCase("white"))
 				return true;
 			//first turn jump
-			else if(relX == 0 && relY == -2 && p.getMoveCount() == 0){
-				p.setMoveCount(p.getMoveCount()+1);
+			else if(relX == 0 && relY == -2 && p.getYpos() == 6){
 				return true;
 			}
 			//capture, making sure capture is true
@@ -882,8 +884,7 @@ public class ChessBoard {
 			if(relX == 0 && relY == 1 && !getPieceRelative(p,relX,relY).getColor().equalsIgnoreCase("black"))
 				return true;
 			//first turn jump
-			else if(relX == 0 && relY == 2 && p.getMoveCount() == 0){
-				p.setMoveCount(p.getMoveCount()+1);
+			else if(relX == 0 && relY == 2 && p.getYpos() == 1){
 				return true;
 			}
 			//capture, making sure capture is true

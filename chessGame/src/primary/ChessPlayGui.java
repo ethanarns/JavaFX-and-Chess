@@ -25,7 +25,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import us.pecon.ray.chessPlay.Blank;
 import us.pecon.ray.chessPlay.ChessBoard;
 import us.pecon.ray.chessPlay.Piece;
 import us.pecon.ray.chessPlay.Position;
@@ -45,6 +44,7 @@ public class ChessPlayGui extends Application {
 	private GridPane board;
 	private VBox moves;
 	private ArrayList<String> moveList;
+	private int turnNumber;
 	
 	private Button exitButton;
 	
@@ -55,7 +55,8 @@ public class ChessPlayGui extends Application {
 	
 	/*
 	 * fun fact: todo get recognized by Eclipse and can be accessed in a window
-	 * TODO: Click
+	 * TODO: Test user input
+	 * TODO: Sound?
 	 */
 	public static void main(String[] args) {
 		launch(args);
@@ -70,7 +71,7 @@ public class ChessPlayGui extends Application {
 	public void init(){
 		//initialize the chess API
 		chess = new ChessBoard();
-		chess.setDebug(true);
+		chess.setDebug(false);
 		chess.resetBoard();
 		
 		if(chess.isDebug())
@@ -132,6 +133,7 @@ public class ChessPlayGui extends Application {
 	    moves.setSpacing(8);
 	    moves.setBackground(new Background(new BackgroundFill(Color.web("#FFFFFF"), CornerRadii.EMPTY, Insets.EMPTY)));
 	    moves.setMinWidth(240);
+	    turnNumber = 1;
 	}
 	
 	/**
@@ -174,7 +176,8 @@ public class ChessPlayGui extends Application {
 	}
 	
 	public void squareClicked(Position pos){
-		System.out.println("Looking for move is " + lookingForMove);
+		if(chess.isDebug())
+			System.out.println("Looking for move is " + lookingForMove);
 		
 		if(pos == null)
 			return;
@@ -209,13 +212,44 @@ public class ChessPlayGui extends Application {
 			//first, get piece that is piece of prior selected square
 			Piece currentPiece = chess.getPiece(selectedSquare);
 			Position prePos = currentPiece.getPosition();
-			chess.move(currentPiece, pos.getXpos() - prePos.getXpos(), pos.getYpos() - prePos.getYpos());
+			
+			//setup capture logic
+			boolean isNewSquareEnemy = false;
+			String newSquareColor = chess.getPiece(pos).getColor();
+			String newSquareName = chess.getPiece(pos).getClass().getSimpleName();
+			if(chess.isDebug())
+				System.out.println("The new square's color: " + newSquareColor);
+			if(chess.getTurn().equalsIgnoreCase("white")){
+				if(newSquareColor.equalsIgnoreCase("black"))
+					isNewSquareEnemy = true;
+			}
+			else if(chess.getTurn().equalsIgnoreCase("black")){
+				if(newSquareColor.equalsIgnoreCase("white"))
+					isNewSquareEnemy = true;
+			}
+			
+			//Now the actual move check
+			if(!chess.move(currentPiece, pos.getXpos() - prePos.getXpos(), pos.getYpos() - prePos.getYpos())){
+				if(chess.isDebug())
+					System.out.print("Move not successful.");
+				return;
+			}
 			//Move done, do updates
 			updateBoard();
 			lookingForMove = false;
 			selectedSquare.setXpos(-1);
 			selectedSquare.setYpos(-1);
 			chess.changeTurn();
+			printMove("" + turnNumber + ". " + chess.getPiece(pos).getColor() +
+					" " + chess.getPiece(pos).getClass().getSimpleName() + 
+					" moved to (" + (pos.getXpos()+1) + ", " + (pos.getYpos()+1) + ")");
+			turnNumber++;
+			if(isNewSquareEnemy){
+				if(chess.isDebug())
+					System.out.println("The new square was an enemy!");
+				printMove("" + newSquareColor + " " + newSquareName + " at (" + 
+					(pos.getXpos()+1) + ", " + (pos.getYpos()+1) + ") defeated!");
+			}
 			return;
 		}
 		else if(!lookingForMove){//Nothing selected, needs move
@@ -224,7 +258,6 @@ public class ChessPlayGui extends Application {
 			setSquareSelectedColor(selectedSquare);
 			return;
 		}
-		System.out.println("What happened?");
 	}
 	
 	public void setSquareSelectedColor(Position pos){
