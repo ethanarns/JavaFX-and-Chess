@@ -34,7 +34,11 @@ import us.pecon.ray.chessPlay.Piece;
  * @author ethanarns
  */
 public class ChessPlayGui extends Application {
-
+	
+	/*
+	 * These are all private because even though this is likely never to be in
+	 * a situation where someone can access it, it's good practice
+	 */
 	private BorderPane borderPane;
 	private ToolBar toolbar;
 	private GridPane board;
@@ -48,6 +52,7 @@ public class ChessPlayGui extends Application {
 	/*
 	 * fun fact: todo get recognized by Eclipse and can be accessed in a window
 	 * TODO: Graphics
+	 * TODO: Super advanced AI that breaks all records?
 	 */
 	public static void main(String[] args) {
 		launch(args);
@@ -258,7 +263,7 @@ public class ChessPlayGui extends Application {
 	/**
 	 * A safe method of stopping. System.exit() works too, but with
 	 * Platform.exit(), this little method gets called, and allows for things
-	 * like saving on close etc.
+	 * like saving on close etc. Very useful.
 	 */
 	@Override
 	public void stop(){
