@@ -178,16 +178,12 @@ public class ChessPlayGui extends Application {
 				rect.setOnMousePressed(new EventHandler<MouseEvent>() {
 				    @Override
 				    public void handle(MouseEvent mouseEvent) {
-				        squareClicked((Rectangle)(mouseEvent.getSource()));
+				        System.out.println("Square clicked!");
 				    }
 				});
 				board.add(rect, i, j);
 			}
 		}
-	}
-	
-	public void squareClicked(Rectangle rect){
-		System.out.println("LayoutX: " + rect.getLayoutX());
 	}
 	
 	/**
@@ -206,7 +202,7 @@ public class ChessPlayGui extends Application {
 				rect.setOnMousePressed(new EventHandler<MouseEvent>() {
 				    @Override
 				    public void handle(MouseEvent mouseEvent) {
-				        squareClicked((Rectangle)(mouseEvent.getSource()));
+				        System.out.println("Square clicked!");
 				    }
 				});
 				board.add(rect, i+1, 8-j);

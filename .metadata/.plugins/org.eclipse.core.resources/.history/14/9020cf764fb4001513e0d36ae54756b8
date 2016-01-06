@@ -186,8 +186,8 @@ public class ChessPlayGui extends Application {
 		}
 	}
 	
-	public void squareClicked(Rectangle rect){
-		System.out.println("LayoutX: " + rect.getLayoutX());
+	public void squareClicked(Rectangle obj){
+		
 	}
 	
 	/**
