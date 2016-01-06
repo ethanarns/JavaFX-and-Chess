@@ -11,7 +11,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -28,6 +27,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import us.pecon.ray.chessPlay.ChessBoard;
 import us.pecon.ray.chessPlay.Piece;
+import us.pecon.ray.chessPlay.Position;
 
 /**
  * I have officially begun using GitHub, and this lame, un-original little
@@ -46,6 +46,8 @@ public class ChessPlayGui extends Application {
 	private ArrayList<String> moveList;
 	
 	private Button exitButton;
+	
+	private Position selectedSquare;
 	
 	private ChessBoard chess;
 	
@@ -154,6 +156,52 @@ public class ChessPlayGui extends Application {
 	}
 	
 	/**
+	 * Translates a click somewhere on the board GridePane into a computer-
+	 * friendly chess location as a Position object. Checks if click is
+	 * inside the boundaries, returns null if not on a square.
+	 * 
+	 * @param eventX   the event.getX() input
+	 * @param eventY   the event.getY() input
+	 * @return         Adjusted position if valid, null if invalid
+	 */
+	public Position getClickPos(double eventX, double eventY){
+		int padding = 38;
+		if(eventX < padding || eventY < padding)
+			return null;
+		else if(eventX > 518 || eventY > 518)
+			return null;
+		int x = ((int) (eventX - padding))/60;
+		int y = ((int) (eventY - padding))/60;
+		return new Position(x, 7-y);
+	}
+	
+	public void squareClicked(Position pos){
+		if(pos == null)
+			return;
+		if(pos.getXpos() > 7 || pos.getXpos() < 0 || pos.getYpos() > 7 || pos.getYpos() < 0)
+			return;
+		selectedSquare = pos;
+		setSquareSelectedColor(selectedSquare);
+	}
+	
+	public void setSquareSelectedColor(Position pos){
+		updateBoard();
+		Rectangle rect = new Rectangle();
+		rect.setWidth(60);
+		rect.setHeight(60);
+		rect.setStroke(Color.GRAY);
+		rect.setStrokeWidth(3);
+		rect.setFill(Color.LIGHTGRAY);
+		board.add(rect, pos.getXpos()+1, 8-pos.getYpos());
+		String symbol = " " + getSymbol(chess.getPiece(pos.getXpos(), pos.getYpos()).symbol());
+		Text tempText = new Text(symbol);
+		Font tempFont = new Font(42);
+		tempText.setFont(tempFont);
+		if(!symbol.equalsIgnoreCase(" _"))
+			board.add(tempText, pos.getXpos()+1, 8-pos.getYpos());
+	}
+	
+	/**
 	 * Initializes the board variable as a GridPane. It then adds in graphics
 	 * representing blank spaces
 	 */
@@ -172,22 +220,21 @@ public class ChessPlayGui extends Application {
 				Rectangle rect = new Rectangle();
 				rect.setWidth(squareSize);
 				rect.setHeight(squareSize);
-				rect.setStroke(Color.color(0.4, 0.4, 0.4));
+				rect.setStroke(Color.GREY);
 				rect.setStrokeWidth(3);
-				rect.setFill(Color.color(1, 1, 1));
-				rect.setOnMousePressed(new EventHandler<MouseEvent>() {
-				    @Override
-				    public void handle(MouseEvent mouseEvent) {
-				        squareClicked((Rectangle)(mouseEvent.getSource()));
-				    }
-				});
+				rect.setFill(Color.WHITE);
 				board.add(rect, i, j);
 			}
 		}
-	}
-	
-	public void squareClicked(Rectangle rect){
-		System.out.println("LayoutX: " + rect.getLayoutX());
+		
+		board.setOnMousePressed(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent event) {
+				squareClicked(getClickPos(event.getX(), event.getY()));
+			}//This makes it so when a square is clicked (ignoring objects
+		});//inside, it returns a proper chess coordinate as a Position object
+		
+		selectedSquare = new Position(-1, -1);
 	}
 	
 	/**
@@ -200,15 +247,9 @@ public class ChessPlayGui extends Application {
 				Rectangle rect = new Rectangle();
 				rect.setWidth(60);
 				rect.setHeight(60);
-				rect.setStroke(Color.color(0.4, 0.4, 0.4));
+				rect.setStroke(Color.GREY);
 				rect.setStrokeWidth(3);
-				rect.setFill(Color.color(1, 1, 1));
-				rect.setOnMousePressed(new EventHandler<MouseEvent>() {
-				    @Override
-				    public void handle(MouseEvent mouseEvent) {
-				        squareClicked((Rectangle)(mouseEvent.getSource()));
-				    }
-				});
+				rect.setFill(Color.WHITE);
 				board.add(rect, i+1, 8-j);
 				String symbol = " " + getSymbol(chess.getPiece(i, j).symbol());
 				Text tempText = new Text(symbol);
