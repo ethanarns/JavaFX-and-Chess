@@ -36,33 +36,52 @@ public abstract class Piece {
 	}
 	
 	/**
-	 * Constructor without position parameters, semi-dangerous
+	 * Returns color as a String
 	 * 
-	 * @param color   color of piece constructed
+	 * @return   Typically "White", "Black", or "Blank"
 	 */
-	public Piece(String color){
-		this.color = color;
-	}
-	
-	/*
-	 * Generic getters and setters
-	 */
-	
 	public String getColor(){
 		return color;
 	}
+	
+	/**
+	 * Returns the position as a Position object
+	 * 
+	 * @return   position represented by Position object
+	 */
 	public Position getPosition(){
 		return this.position;
 	}
+	/**
+	 * Gets X position as Cartesian coordinate
+	 * @return   x-coordinate
+	 */
 	public int getXpos(){
 		return this.position.getXpos();
 	}
+	
+	/**
+	 * Gets Y position as Cartesian coordinate
+	 * @return
+	 */
 	public int getYpos(){
 		return this.position.getYpos();
 	}
+	
+	/**
+	 * Sets the position using another position object
+	 * @param pos   new position object
+	 */
 	public void setPosition(Position pos){
-		this.position = pos;
+		if(pos != null)
+			this.position = pos;
 	}
+	/**
+	 * Sets the position using Cartesian coordinates
+	 * 
+	 * @param x   x-coordinate
+	 * @param y   y-coordinate
+	 */
 	public void setPosition(int x, int y){
 		this.position.setXpos(x);
 		this.position.setYpos(y);

@@ -53,9 +53,11 @@ public class ChessPlayGui extends Application {
 	
 	private ChessBoard chess;
 	
+	private SoundManager playSound;
+	
 	/*
 	 * fun fact: todo get recognized by Eclipse and can be accessed in a window
-	 * TODO: Test user input
+	 * TODO: Constantly test user input
 	 * TODO: Sound?
 	 */
 	public static void main(String[] args) {
@@ -73,6 +75,8 @@ public class ChessPlayGui extends Application {
 		chess = new ChessBoard();
 		chess.setDebug(false);
 		chess.resetBoard();
+		
+		playSound = new SoundManager();
 		
 		if(chess.isDebug())
 			System.out.println("Pre-initialization complete.");
@@ -162,7 +166,7 @@ public class ChessPlayGui extends Application {
 	 * 
 	 * @param eventX   the event.getX() input
 	 * @param eventY   the event.getY() input
-	 * @return         Adjusted position if valid, null if invalid
+	 * @return         adjusted position if valid, null if invalid
 	 */
 	public Position getClickPos(double eventX, double eventY){
 		int padding = 38;//Usually 35, but added a bit in order to fix borders
@@ -175,6 +179,18 @@ public class ChessPlayGui extends Application {
 		return new Position(x, 7-y);
 	}
 	
+	/**
+	 * This should be called upon a square being clicked on the board pane. It
+	 * first does a bunch of input tests, then checks if the click itself is
+	 * legal based on current turn and whether or not the user is looking to
+	 * place a piece on a blank space or an enemy piece. It initiates the move
+	 * logic if all requirements are met.
+	 * <br>
+	 * It also works with the move history list, and prints the move. It also
+	 * checks for piece capture, and will also print that to the history list.
+	 * 
+	 * @param pos   the position of the square clicked
+	 */
 	public void squareClicked(Position pos){
 		if(chess.isDebug())
 			System.out.println("Looking for move is " + lookingForMove);
@@ -195,14 +211,17 @@ public class ChessPlayGui extends Application {
 			selectedSquare.setXpos(-1);
 			selectedSquare.setYpos(-1);
 			lookingForMove = false;
+			playSound.click();
 			return;
 		}
 		if(chess.getTurn().equalsIgnoreCase("white") && chess.getPiece(pos).getColor().equalsIgnoreCase("black") && !lookingForMove){
+			playSound.error();
 			if(chess.isDebug())
 				System.out.println("It is white's turn");
 			return;
 		}
 		else if(chess.getTurn().equalsIgnoreCase("black") && chess.getPiece(pos).getColor().equalsIgnoreCase("white") && !lookingForMove){
+			playSound.error();
 			if(chess.isDebug())
 				System.out.println("It is black's turn");
 			return;
@@ -232,9 +251,11 @@ public class ChessPlayGui extends Application {
 			if(!chess.move(currentPiece, pos.getXpos() - prePos.getXpos(), pos.getYpos() - prePos.getYpos())){
 				if(chess.isDebug())
 					System.out.print("Move not successful.");
+				playSound.error();
 				return;
 			}
 			//Move done, do updates
+			
 			updateBoard();
 			lookingForMove = false;
 			selectedSquare.setXpos(-1);
@@ -249,17 +270,29 @@ public class ChessPlayGui extends Application {
 					System.out.println("The new square was an enemy!");
 				printMove("" + newSquareColor + " " + newSquareName + " at (" + 
 					(pos.getXpos()+1) + ", " + (pos.getYpos()+1) + ") defeated!");
+				playSound.slash();
 			}
+			else
+				playSound.place();
 			return;
 		}
 		else if(!lookingForMove){//Nothing selected, needs move
 			selectedSquare = pos;
 			lookingForMove = true;
 			setSquareSelectedColor(selectedSquare);
+			playSound.click();
 			return;
 		}
 	}
 	
+	/**
+	 * A method that sets the square at the selected color to an appropriate
+	 * selection color. It first updates the board, as to clear any other
+	 * selection colors. The fill color is Color.LIGHTGRAY, the stroke is
+	 * Color.GRAY.
+	 * 
+	 * @param pos   position to set to select color
+	 */
 	public void setSquareSelectedColor(Position pos){
 		updateBoard();
 		Rectangle rect = new Rectangle();
@@ -279,7 +312,9 @@ public class ChessPlayGui extends Application {
 	
 	/**
 	 * Initializes the board variable as a GridPane. It then adds in graphics
-	 * representing blank spaces
+	 * representing blank spaces, sets the mouse event for square click
+	 * recognition, and initiates the square selection variable and whether
+	 * or not the user is looking to move, which should initially be false.
 	 */
 	public void initBoard(){
 		int squareSize = 60;
@@ -396,7 +431,8 @@ public class ChessPlayGui extends Application {
 	/**
 	 * A safe method of stopping. System.exit() works too, but with
 	 * Platform.exit(), this little method gets called, and allows for things
-	 * like saving on close etc.
+	 * like saving on close etc. This is not to be manually called, only by the
+	 * Application run itself
 	 */
 	@Override
 	public void stop(){

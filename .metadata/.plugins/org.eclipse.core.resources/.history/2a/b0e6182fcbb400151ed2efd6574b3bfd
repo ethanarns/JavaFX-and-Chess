@@ -1,0 +1,18 @@
+package primary;
+
+import javafx.scene.media.AudioClip;
+
+public class SoundManager {
+	
+	private AudioClip clickSound;
+	private AudioClip errorSound;
+	private AudioClip placeSound;
+	/**
+	 * A class made as a utility for playing certain sounds. Simplifies things
+	 * to do in the Main class, and also better organizationally.
+	 */
+	public SoundManager(){
+		
+	}
+
+}

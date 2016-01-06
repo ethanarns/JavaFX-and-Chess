@@ -1,0 +1,12 @@
+package primary;
+
+public class SoundManager {
+	
+	/**
+	 * A class made as a utility for playing certain sounds.
+	 */
+	public SoundManager(){
+		
+	}
+
+}

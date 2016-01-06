@@ -29,18 +29,34 @@ public class Position {
 		this.yPos = y;
 	}
 
-	/*
-	 * Generic getters and setters
+	/**
+	 * Gets x position
+	 * @return   x position
 	 */
 	public int getXpos() {
 		return xPos;
 	}
+	
+	/**
+	 * Sets x position
+	 * @param xPos   x position
+	 */
 	public void setXpos(int xPos) {
 		this.xPos = xPos;
 	}
+	
+	/**
+	 * Gets y position
+	 * @return   y position
+	 */
 	public int getYpos() {
 		return yPos;
 	}
+	
+	/**
+	 * Sets y position
+	 * @param yPos   y position
+	 */
 	public void setYpos(int yPos) {
 		this.yPos = yPos;
 	}
