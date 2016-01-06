@@ -67,7 +67,7 @@ public class ChessPlayGui extends Application {
 	public void init(){
 		//initialize the chess API
 		chess = new ChessBoard();
-		chess.setDebug(true);
+		chess.setDebug(false);
 		chess.resetBoard();
 		
 		if(chess.isDebug())

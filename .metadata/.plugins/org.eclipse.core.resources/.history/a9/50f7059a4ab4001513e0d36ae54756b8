@@ -2,6 +2,7 @@ package us.pecon.ray.chessPlay;
 
 import java.util.ArrayList;
 
+
 /**
  * A class representing a chess board in which individual pieces will be placed
  * and manipulated upon. Its primary method of manipulation and containment is 

@@ -93,10 +93,6 @@ public class ChessPlayGui extends Application {
 	    updateBoard();
 	    primaryStage.show();
 	    
-	    chess.move_hr("E2-E4");
-	    chess.move_hr("E7-E5");
-	    chess.move_hr("E4-E5");
-	    
 	    updateBoard();
 	}
 	
