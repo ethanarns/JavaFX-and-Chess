@@ -51,13 +51,23 @@ public class SoundManager {
 	}
 	
 	/**
+	 * Sets all sound volume to 0
+	 */
+	public void mute(){
+		clickSound.setVolume(0);
+		placeSound.setVolume(0);
+		slashSound.setVolume(0);
+		errorSound.setVolume(0);
+	}
+	
+	/**
 	 * Sets sound volume to custom value
 	 * @param vol   double between 0.0 and 1.0 representing volume
 	 */
 	public void setVolume(double vol){
 		clickSound.setVolume(vol);
 		placeSound.setVolume(vol);
-		slashSound.setVolume(vol);
+		placeSound.setVolume(vol);
 		errorSound.setVolume(vol);
 		click();
 	}

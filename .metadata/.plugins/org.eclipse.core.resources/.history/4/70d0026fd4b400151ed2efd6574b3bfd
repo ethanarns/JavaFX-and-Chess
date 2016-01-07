@@ -57,7 +57,7 @@ public class SoundManager {
 	public void setVolume(double vol){
 		clickSound.setVolume(vol);
 		placeSound.setVolume(vol);
-		slashSound.setVolume(vol);
+		placeSound.setVolume(vol);
 		errorSound.setVolume(vol);
 		click();
 	}

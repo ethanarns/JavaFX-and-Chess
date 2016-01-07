@@ -122,26 +122,8 @@ public class ChessPlayGui extends Application {
         });
 		exitButton.setAlignment(Pos.BOTTOM_RIGHT);
 		
-		muteButton = new Button("Sound");
-		muteButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(muted){
-                	muted = false;
-                	playSound.setVolume(1.0);
-                	muteButton.setText("Mute");
-                }
-                else{
-                	muted = true;
-                	playSound.setVolume(0.0);
-                	muteButton.setText("Unmute");
-                }
-            }
-        });
-		
 		toolbar = new ToolBar(
-			exitButton,
-			muteButton
+			exitButton
 		);
 		int size = 50;
 		toolbar.setPrefHeight(size);

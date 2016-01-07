@@ -129,12 +129,10 @@ public class ChessPlayGui extends Application {
                 if(muted){
                 	muted = false;
                 	playSound.setVolume(1.0);
-                	muteButton.setText("Mute");
                 }
                 else{
                 	muted = true;
                 	playSound.setVolume(0.0);
-                	muteButton.setText("Unmute");
                 }
             }
         });

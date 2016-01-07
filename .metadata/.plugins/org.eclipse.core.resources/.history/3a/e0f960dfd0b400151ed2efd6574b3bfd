@@ -47,7 +47,6 @@ public class ChessPlayGui extends Application {
 	private int turnNumber;
 	
 	private Button exitButton;
-	private Button muteButton;
 	
 	private Position selectedSquare;
 	private boolean lookingForMove;
@@ -55,7 +54,6 @@ public class ChessPlayGui extends Application {
 	private ChessBoard chess;
 	
 	private SoundManager playSound;
-	private boolean muted;
 	
 	/*
 	 * fun fact: todo get recognized by Eclipse and can be accessed in a window
@@ -79,8 +77,7 @@ public class ChessPlayGui extends Application {
 		chess.resetBoard();
 		
 		playSound = new SoundManager();
-		playSound.setVolume(1.0);//Maximum volume
-		muted = false;
+		playSound.setVolume(10.1);
 		
 		if(chess.isDebug())
 			System.out.println("Pre-initialization complete.");
@@ -122,26 +119,8 @@ public class ChessPlayGui extends Application {
         });
 		exitButton.setAlignment(Pos.BOTTOM_RIGHT);
 		
-		muteButton = new Button("Sound");
-		muteButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(muted){
-                	muted = false;
-                	playSound.setVolume(1.0);
-                	muteButton.setText("Mute");
-                }
-                else{
-                	muted = true;
-                	playSound.setVolume(0.0);
-                	muteButton.setText("Unmute");
-                }
-            }
-        });
-		
 		toolbar = new ToolBar(
-			exitButton,
-			muteButton
+			exitButton
 		);
 		int size = 50;
 		toolbar.setPrefHeight(size);

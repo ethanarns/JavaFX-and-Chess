@@ -50,15 +50,16 @@ public class SoundManager {
 		slashSound.play();
 	}
 	
-	/**
-	 * Sets sound volume to custom value
-	 * @param vol   double between 0.0 and 1.0 representing volume
-	 */
+	public void mute(){
+		clickSound.setVolume(0);
+		placeSound.setVolume(0);
+		slashSound.setVolume(0);
+	}
+	
 	public void setVolume(double vol){
 		clickSound.setVolume(vol);
 		placeSound.setVolume(vol);
-		slashSound.setVolume(vol);
-		errorSound.setVolume(vol);
+		placeSound.setVolume(vol);
 		click();
 	}
 }
