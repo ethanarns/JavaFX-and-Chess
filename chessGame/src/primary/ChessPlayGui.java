@@ -1,5 +1,11 @@
 package primary;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javafx.application.Application;
@@ -24,10 +30,18 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import us.pecon.ray.chessPlay.Bishop;
+import us.pecon.ray.chessPlay.Blank;
 import us.pecon.ray.chessPlay.ChessBoard;
+import us.pecon.ray.chessPlay.King;
+import us.pecon.ray.chessPlay.Knight;
+import us.pecon.ray.chessPlay.Pawn;
 import us.pecon.ray.chessPlay.Piece;
 import us.pecon.ray.chessPlay.Position;
+import us.pecon.ray.chessPlay.Queen;
+import us.pecon.ray.chessPlay.Rook;
 
 /**
  * I have officially begun using GitHub, and this lame, un-original little
@@ -49,6 +63,8 @@ public class ChessPlayGui extends Application {
 	private Button exitButton;
 	private Button muteButton;
 	private Button resetButton;
+	private Button saveButton;
+	private Button loadButton;
 	
 	private Position selectedSquare;
 	private boolean lookingForMove;
@@ -60,7 +76,6 @@ public class ChessPlayGui extends Application {
 	
 	/*
 	 * fun fact: todo get recognized by Eclipse and can be accessed in a window
-	 * TODO: Constantly test user input
 	 */
 	public static void main(String[] args) {
 		launch(args);
@@ -91,7 +106,7 @@ public class ChessPlayGui extends Application {
 	 * and do other initializations in the init() method
 	 */
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(final Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Chess");
 		borderPane = new BorderPane();
 		initBoard();
@@ -103,6 +118,45 @@ public class ChessPlayGui extends Application {
 	    borderPane.setRight(moves);
 	    primaryStage.setScene(new Scene(borderPane, 800,600));
 	    updateBoard();
+	    //File utilities
+	    loadButton.setOnAction(
+			new EventHandler<ActionEvent>(){
+				@Override
+				public void handle(ActionEvent event) {
+					FileChooser fileChooser = new FileChooser();
+					fileChooser.setTitle("Load game");
+					File file = fileChooser.showOpenDialog(primaryStage);
+					if(file != null){
+						try {
+							loadFile(file);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+					else{
+						System.out.println("Load failed.");
+					}
+				}
+			}
+	    );
+	    saveButton.setOnAction(
+	    	new EventHandler<ActionEvent>(){
+				@Override
+				public void handle(ActionEvent event) {
+					FileChooser fileChooser = new FileChooser();
+					fileChooser.setTitle("Save game");
+					File file = fileChooser.showSaveDialog(primaryStage);
+					if(file != null){
+						try {
+							saveFile(file);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+	    	}
+	    );
+	    
 	    primaryStage.show();
 	    
 	    updateBoard();
@@ -117,6 +171,7 @@ public class ChessPlayGui extends Application {
 		exitButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+            	playSound.click();
                 Platform.exit();//The safer way to exit!
             }
         });
@@ -143,21 +198,31 @@ public class ChessPlayGui extends Application {
 		resetButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+            	playSound.click();
             	if(chess.getTurn().equalsIgnoreCase("black"))
             		chess.changeTurn();//set to white if black
             	resetBoard();
             	turnNumber = 1;
             	moves.getChildren().clear();
+            	moveList.clear();
             	updateBoard();
             	if(chess.isDebug())
             		System.out.println("Board reset.");
             }
         });
 		
+		saveButton = new Button("Save");
+		//saveButton moved to primary loader for stage variable
+		
+		loadButton = new Button("Load");
+		//loadButton moved to primary loader for stage variable
+		
 		toolbar = new ToolBar(
 			exitButton,
 			muteButton,
-			resetButton
+			resetButton,
+			saveButton,
+			loadButton
 		);
 		int size = 50;
 		toolbar.setPrefHeight(size);
@@ -466,6 +531,39 @@ public class ChessPlayGui extends Application {
 		return " ";
 	}
 	
+	public Piece getSavedPiece(String symbol, int x, int y){
+		if(symbol.length() != 1){
+			if(chess.isDebug())
+				System.out.println("Invalid Piece symbol.");
+			return null;
+		}
+		if(symbol.equals("b"))
+			return new Bishop("Black", x, y);
+		else if (symbol.equals("B"))
+			return new Bishop("White", x, y);
+		else if (symbol.equals("K"))
+			return new King("White",   x, y);
+		else if (symbol.equals("k"))
+			return new King("Black",   x, y);
+		else if (symbol.equals("n"))
+			return new Knight("Black", x, y);
+		else if (symbol.equals("N"))
+			return new Knight("White", x, y);
+		else if (symbol.equals("r"))
+			return new Rook("Black",   x, y);
+		else if (symbol.equals("R"))
+			return new Rook("White",   x, y);
+		else if (symbol.equals("q"))
+			return new Queen("Black",  x, y);
+		else if (symbol.equals("Q"))
+			return new Queen("White",  x, y);
+		else if (symbol.equals("p"))
+			return new Pawn("Black",   x, y);
+		else if (symbol.equals("P"))
+			return new Pawn("White",   x, y);
+		return new Blank("Blank",      x, y);
+	}
+	
 	/**
 	 * A safe method of stopping. System.exit() works too, but with
 	 * Platform.exit(), this little method gets called, and allows for things
@@ -476,6 +574,113 @@ public class ChessPlayGui extends Application {
 	public void stop(){
 		if(chess.isDebug())
 			System.out.println("Safely stopping.");
+	}
+	
+	/*
+	 * File utilities
+	 */
+	
+	public void loadFile(File file) throws IOException{
+		if(file == null)
+			return;
+		if(chess.isDebug())
+			System.out.println("File \'" + file.getName() + "\' has been loaded.");
+		//First, some cleanup
+		resetBoard();
+		for(int i = 0; i < 8; i++){
+			for(int j = 0; j < 8; j++){
+				placePiece(new Blank("Blank", i, j));
+			}
+		}
+		moves.getChildren().clear();
+		turnNumber = -1;
+		moveList.clear();
+		//initiate the reader
+		BufferedReader reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
+		//Now for the actual reading. Remember to check input.
+		//first should be a turn
+		String turn = reader.readLine();
+		if(!(turn.equalsIgnoreCase("white") || turn.equalsIgnoreCase("black"))){
+			System.out.println("Bad save.");
+			reader.close();
+			return;
+		}
+		if(turn.equalsIgnoreCase("black")){
+			chess.changeTurn();
+		}//if its white, the reset should have made the turn white too
+		//now, for the turn count
+		String turnLine = reader.readLine();
+		int turnInt = -1;
+		try {
+			turnInt = Integer.parseInt(turnLine);
+		} catch (NumberFormatException e) {
+			System.out.println("turnLine is not an integer");
+			e.printStackTrace();
+			reader.close();
+			return;
+		}
+		if(turnInt > 0)
+			turnNumber = turnInt;
+		else{
+			System.out.println("Invalid turn number.");
+			reader.close();
+			return;
+		}
+		//now for the actual piece positions
+		for(int i = 0; i < 8; i++){
+			String pieceLine = reader.readLine();
+			//check for validity
+			if(pieceLine.length() != 8){
+				System.out.println("Bad save.");
+				reader.close();
+				return;
+			}
+			for(int j = 7; j >= 0; j--){
+				placePiece(getSavedPiece(pieceLine.charAt(j) + "", i, j));
+			}
+		}
+		//Now for the list of moves
+		String moveLine = null;
+		//setting a variable returns its data, so this'll go until it creates a null variable
+		while((moveLine = reader.readLine()) != null){
+			printMove(moveLine);
+		}
+		
+		reader.close();
+	}
+	
+	public void saveFile(File file) throws IOException{
+		if(file == null)
+			return;
+		try (BufferedWriter writer = new BufferedWriter(new PrintWriter(file.getPath().toString() + ".chs"))) {
+			//write turn, as a check
+			writer.write(chess.getTurn());
+			writer.newLine();
+			writer.write("" + turnNumber);
+			writer.newLine();
+			//write positions of pieces
+	        for(int i = 0; i < 8; i++){
+	        	for(int j = 0; j < 8; j++){
+	        		writer.write(chess.getPiece(i, j).symbol());
+	        	}
+	        	writer.newLine();
+	        }
+	        //now write the history list
+	        if(moveList.size() < 1){
+	        	if(chess.isDebug())
+	        		System.out.println("Nothing to save.");
+	        	return;
+	        }
+	        for(int i = 0; i < moveList.size(); i++){
+	        	writer.write(moveList.get(i));
+	        	writer.newLine();
+	        }
+	        writer.close();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+		if(chess.isDebug())
+			System.out.println("File \'" + file.getName() + "\' has been saved.");
 	}
 	
 }

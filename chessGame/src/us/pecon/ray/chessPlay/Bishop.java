@@ -9,7 +9,7 @@ public class Bishop extends Piece {
 	public Bishop(String color, Position position){
 		super(color, position);
 	}
-	
+
 	public String symbol(){
 		return this.color.equalsIgnoreCase("white")? "B" : "b";
 	}

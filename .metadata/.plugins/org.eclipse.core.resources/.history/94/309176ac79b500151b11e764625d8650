@@ -1,0 +1,11 @@
+package primary;
+
+import java.io.FileWriter;
+import java.io.PrintWriter;
+
+public class SaveManager {
+	
+	private FileWriter fileWriter;
+	private PrintWriter printWriter;
+
+}

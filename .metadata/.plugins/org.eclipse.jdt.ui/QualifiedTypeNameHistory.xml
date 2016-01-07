@@ -2,4 +2,10 @@
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="javafx.scene.input.MouseEvent"/>
 <fullyQualifiedTypeName name="javafx.scene.input.MouseButton"/>
+<fullyQualifiedTypeName name="us.pecon.ray.chessPlay.Position"/>
+<fullyQualifiedTypeName name="us.pecon.ray.chessPlay.Blank"/>
+<fullyQualifiedTypeName name="javafx.scene.media.AudioClip"/>
+<fullyQualifiedTypeName name="javafx.scene.media.MediaPlayer"/>
+<fullyQualifiedTypeName name="javafx.scene.media.Media"/>
+<fullyQualifiedTypeName name="java.io.File"/>
 </qualifiedTypeNameHistroy>

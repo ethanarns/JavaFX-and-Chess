@@ -1,0 +1,13 @@
+package primary;
+
+import javax.swing.JFileChooser;
+
+public class SaveManager {
+	
+	private JFileChooser fileChooser;
+	
+	public SaveManager(){
+		fileChooser = new JFileChooser();
+	}
+
+}

@@ -1,0 +1,9 @@
+package primary;
+
+public class SaveManager {
+	
+	public SaveManager(){
+		
+	}
+
+}

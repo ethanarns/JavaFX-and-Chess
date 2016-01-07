@@ -1,0 +1,28 @@
+package primary;
+
+import java.io.File;
+
+import javax.swing.JFileChooser;
+
+public class SaveManager {
+	
+	private JFileChooser fileChooser;
+	
+	public SaveManager(){
+		fileChooser = new JFileChooser();
+	}
+	
+	public File loadFile(){
+		int approveVal = fileChooser.showOpenDialog(fileChooser.this);
+		File file1;
+		if (approveVal == JFileChooser.APPROVE_OPTION) {
+            file1 = fileChooser.getSelectedFile();
+            //This is where a real application would open the file.
+            System.out.println(file1.getName());
+        } else {
+            System.out.println("Load canceled");
+        }
+		return null;
+	}
+
+}

@@ -2,3 +2,6 @@
 1452120331369	Rename resource 'Error.wav'
 1452120639732	Delete element
 1452120661997	Rename resource 'SlicePicked2.wav'
+1452198170873	Delete element
+1452201475205	Rename local variable 'bw'
+1452201490855	Rename local variable 'br'
