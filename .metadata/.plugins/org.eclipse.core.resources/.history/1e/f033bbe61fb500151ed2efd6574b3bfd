@@ -75,7 +75,7 @@ public class ChessPlayGui extends Application {
 	public void init(){
 		//initialize the chess API
 		chess = new ChessBoard();
-		chess.setDebug(true);
+		chess.setDebug(false);
 		chess.resetBoard();
 		
 		playSound = new SoundManager();
@@ -145,7 +145,7 @@ public class ChessPlayGui extends Application {
             public void handle(ActionEvent event) {
             	if(chess.getTurn().equalsIgnoreCase("black"))
             		chess.changeTurn();//set to white if black
-            	resetBoard();
+            	chess.resetBoard();
             	turnNumber = 1;
             	moves.getChildren().clear();
             	updateBoard();

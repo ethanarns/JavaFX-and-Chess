@@ -272,11 +272,6 @@ public class ChessBoard {
 	 * Places all pieces in proper starting position
 	 */
 	public void resetBoard(){
-		for(int i = 0; i < 8; i++){
-			for(int j = 0; j < 8; j++){
-				placePiece(new Blank("Blank", i, j));
-			}
-		}
 		for(int i = 0; i < 8; i++)
 			placePiece(new Pawn("White", i, 1));
 		for(int j = 0; j < 8; j++)

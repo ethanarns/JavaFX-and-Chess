@@ -75,7 +75,7 @@ public class ChessPlayGui extends Application {
 	public void init(){
 		//initialize the chess API
 		chess = new ChessBoard();
-		chess.setDebug(true);
+		chess.setDebug(false);
 		chess.resetBoard();
 		
 		playSound = new SoundManager();
@@ -140,24 +140,19 @@ public class ChessPlayGui extends Application {
         });
 		
 		resetButton = new Button("Reset");
-		resetButton.setOnAction(new EventHandler<ActionEvent>() {
+		muteButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	if(chess.getTurn().equalsIgnoreCase("black"))
             		chess.changeTurn();//set to white if black
-            	resetBoard();
-            	turnNumber = 1;
-            	moves.getChildren().clear();
+            	chess.resetBoard();
             	updateBoard();
-            	if(chess.isDebug())
-            		System.out.println("Board reset.");
             }
         });
 		
 		toolbar = new ToolBar(
 			exitButton,
-			muteButton,
-			resetButton
+			muteButton
 		);
 		int size = 50;
 		toolbar.setPrefHeight(size);
