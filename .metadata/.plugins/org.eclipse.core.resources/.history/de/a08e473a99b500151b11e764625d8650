@@ -90,7 +90,7 @@ public class ChessPlayGui extends Application {
 	public void init(){
 		//initialize the chess API
 		chess = new ChessBoard();
-		chess.setDebug(false);
+		chess.setDebug(true);
 		chess.resetBoard();
 		
 		playSound = new SoundManager();
@@ -457,7 +457,6 @@ public class ChessPlayGui extends Application {
 	 * graphical board object
 	 */
 	public void updateBoard(){
-		board.getChildren().clear();
 		for(int i = 0; i < 8; i++){
 			for(int j = 0; j < 8; j++){
 				Rectangle rect = new Rectangle();
@@ -482,7 +481,6 @@ public class ChessPlayGui extends Application {
 	 */
 	public void resetBoard(){
 		chess.resetBoard();
-		board.getChildren().clear();
 		updateBoard();
 	}
 	

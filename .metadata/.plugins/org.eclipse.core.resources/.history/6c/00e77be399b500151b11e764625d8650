@@ -90,7 +90,7 @@ public class ChessPlayGui extends Application {
 	public void init(){
 		//initialize the chess API
 		chess = new ChessBoard();
-		chess.setDebug(false);
+		chess.setDebug(true);
 		chess.resetBoard();
 		
 		playSound = new SoundManager();

@@ -649,6 +649,7 @@ public class ChessPlayGui extends Application {
 		}
 		
 		reader.close();
+		board.getChildren().clear();
 	}
 	
 	public void saveFile(File file) throws IOException{
