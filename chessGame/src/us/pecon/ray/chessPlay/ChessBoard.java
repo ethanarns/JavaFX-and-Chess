@@ -15,8 +15,8 @@ public class ChessBoard {
 	protected Piece boardMatrix[][];
 	protected String currentTurn;
 	private ArrayList<Piece> defeatedPieces;
-	private boolean isGameOver;
-	private boolean verbose;
+	protected boolean isGameOver;
+	protected boolean verbose;
 	
 	/**
 	 * Chess board class constructor. Sets current turn to white and initiates

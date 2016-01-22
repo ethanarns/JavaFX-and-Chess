@@ -8,18 +8,13 @@ package us.pecon.ray.chessPlay;
  * Things the computer will like and will go faster. Then I'll make the AI.
  * Keep in mind the AI will be doing the same things humans will, except it'll
  * need more free memory and computing power.
- * <br>
- * This is set to abstract for now in order to prevent people from using it 
- * before it is ready. Even though nobody is ever going to use this.
  * 
  * @author Ethan Arns
  */
-public abstract class ChessBoard_ai extends ChessBoard {
-
-	private boolean whiteTurn;
+public class ChessBoard_ai extends ChessBoard {
 	
 	/**
-	 * The same as ChessBoard, but no wasting memory with a capture list
+	 * The same as ChessBoard, but less wasted memory
 	 */
 	public ChessBoard_ai(){
 		boardMatrix= new Piece[8][8];
@@ -28,18 +23,8 @@ public abstract class ChessBoard_ai extends ChessBoard {
 				boardMatrix[i][j] = new Blank("Blank", i, j);
 			}
 		}
-		setWhiteTurn(true);
-	}
-	
-	/**
-	 * A turn variable which is miniscule compared to its String counterpart.
-	 * 
-	 * @return
-	 */
-	public boolean isWhiteTurn() {
-		return whiteTurn;
-	}
-	public void setWhiteTurn(boolean whiteTurn) {
-		this.whiteTurn = whiteTurn;
+		currentTurn = "White";
+		isGameOver = false;
+		verbose = false;
 	}
 }
