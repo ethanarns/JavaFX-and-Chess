@@ -13,5 +13,4 @@ public class Queen extends Piece {
 	public String symbol(){
 		return this.color.equalsIgnoreCase("white")? "Q" : "q";
 	}
-
 }
