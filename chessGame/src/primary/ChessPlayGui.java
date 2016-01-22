@@ -74,9 +74,6 @@ public class ChessPlayGui extends Application {
 	private SoundManager playSound;
 	private boolean muted;
 	
-	/*
-	 * fun fact: todo get recognized by Eclipse and can be accessed in a window
-	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
