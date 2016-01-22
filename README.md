@@ -1,5 +1,5 @@
 # JavaFX-and-Chess
-A simple chess API package with console-game level capabilities, tied into a JavaFX GUI. This started as practice for my upcoming CMSI 185 class, but took off as I found more interesting things to do with JavaFX.
+A simple chess API package with console-game level capabilities, tied into a JavaFX GUI. This started as practice for my upcoming CMSI 186 class, but took off as I found more interesting things to do with JavaFX.
 
 Features:
 - Move and turn checking to prevent illegal play
