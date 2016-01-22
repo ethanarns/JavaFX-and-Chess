@@ -74,6 +74,9 @@ public class ChessPlayGui extends Application {
 	private SoundManager playSound;
 	private boolean muted;
 	
+	/*
+	 * Main method
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
