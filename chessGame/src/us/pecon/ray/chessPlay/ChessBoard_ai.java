@@ -1,30 +1,35 @@
 package us.pecon.ray.chessPlay;
 
+import java.util.ArrayList;
+
 /**
- * One day, I'll make a smart game system. Then I'll come back to this, and
- * make it complete. And on that day... I'll feel smart. But not yet.
- * <br>
- * For now, I'll just convert everything into a more efficient means of play.
- * Things the computer will like and will go faster. Then I'll make the AI.
- * Keep in mind the AI will be doing the same things humans will, except it'll
- * need more free memory and computing power.
+ * An AI version of ChessBoard.java
  * 
  * @author Ethan Arns
  */
 public class ChessBoard_ai extends ChessBoard {
 	
 	/**
-	 * The same as ChessBoard, but less wasted memory
+	 * The same as ChessBoard, but with other AI abilities
 	 */
 	public ChessBoard_ai(){
-		boardMatrix= new Piece[8][8];
+		super();
+	}
+	
+	public ArrayList<Piece> capturableBy(){
+		ArrayList<Piece> pieceList = new ArrayList<Piece>();
+		// do me
+		return pieceList;
+	}
+	
+	public boolean canMove(Piece p){
 		for(int i = 0; i < 8; i++){
 			for(int j = 0; j < 8; j++){
-				boardMatrix[i][j] = new Blank("Blank", i, j);
+				if(moveCheckAssigner(p, i, j)){
+					return true;// check me
+				}
 			}
 		}
-		currentTurn = "White";
-		isGameOver = false;
-		verbose = false;
+		return false;
 	}
 }

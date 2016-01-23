@@ -17,6 +17,9 @@ public class ChessBoard {
 	private ArrayList<Piece> defeatedPieces;
 	protected boolean isGameOver;
 	protected boolean verbose;
+
+	protected ArrayList<Piece> blackPieces;
+	protected ArrayList<Piece> whitePieces;
 	
 	/**
 	 * Chess board class constructor. Sets current turn to white and initiates
@@ -31,6 +34,9 @@ public class ChessBoard {
 		}
 		currentTurn = "White";
 		defeatedPieces = new ArrayList<Piece>();
+		blackPieces = new ArrayList<Piece>();
+		whitePieces = new ArrayList<Piece>();
+		
 		isGameOver = false;
 		verbose = false;
 	}
@@ -872,7 +878,7 @@ public class ChessBoard {
 	 * @param relY   the relative y movement
 	 * @return       true if move is okay
 	 */
-	private boolean moveCheck_pawn(Piece p, int relX, int relY){
+	protected boolean moveCheck_pawn(Piece p, int relX, int relY){
 		if(p.getColor().equalsIgnoreCase("black")){
 			//basic advance
 			if(relX == 0 && relY == -1 && !getPieceRelative(p,relX,relY).getColor().equalsIgnoreCase("white"))
@@ -909,7 +915,7 @@ public class ChessBoard {
 	 * @param relY   relative y position
 	 * @return       true if move is okay
 	 */
-	private boolean moveCheck_rook(Piece p, int relX, int relY){
+	protected boolean moveCheck_rook(Piece p, int relX, int relY){
 		Piece newPos = getPieceRelative(p,relX,relY);
 		if(straightRecursive(p.getXpos(), p.getYpos()+1, 'u', p, newPos.getPosition()).equals(newPos.getPosition()))
 			return true;
@@ -931,7 +937,7 @@ public class ChessBoard {
 	 * @param relY   relative y position
 	 * @return       true if move is okay
 	 */
-	private boolean moveCheck_bishop(Piece p, int relX, int relY){
+	protected boolean moveCheck_bishop(Piece p, int relX, int relY){
 		Piece newPos = getPieceRelative(p,relX,relY);
 		if(diagonalRecursive(p.getXpos()-1, p.getYpos()+1, "ul", p, newPos.getPosition()).equals(newPos.getPosition()))
 			return true;
@@ -952,7 +958,7 @@ public class ChessBoard {
 	 * @param relY   relative y position
 	 * @return       true if move is legal
 	 */
-	private boolean moveCheck_king(Piece p, int relX, int relY){
+	protected boolean moveCheck_king(Piece p, int relX, int relY){
 		if(relX > 1 || relX < -1 || relY > 1 || relY < -1){
 			if(verbose)
 				System.out.println("Bad move! King cannot move that far.");
@@ -994,7 +1000,7 @@ public class ChessBoard {
 	 * @param relY   relative y position
 	 * @return       true if move legal
 	 */
-	private boolean moveCheck_queen(Piece p, int relX, int relY){
+	protected boolean moveCheck_queen(Piece p, int relX, int relY){
 		Piece newPos = getPieceRelative(p,relX,relY);
 		if(diagonalRecursive(p.getXpos()-1, p.getYpos()+1, "ul", p, newPos.getPosition()).equals(newPos.getPosition()))
 			return true;
@@ -1023,7 +1029,7 @@ public class ChessBoard {
 	 * @param relY
 	 * @return
 	 */
-	private boolean moveCheck_knight(Piece p, int relX, int relY){
+	protected boolean moveCheck_knight(Piece p, int relX, int relY){
 		Piece newPos = getPieceRelative(p, relX, relY);
 		if(p.getXpos()+2==newPos.getXpos() && p.getYpos()+1==newPos.getYpos()){ //    (2,1)
 			return true;
@@ -1051,4 +1057,55 @@ public class ChessBoard {
 		}
 		return false;
 	}
+	
+	/*
+	 * Piece list utilities
+	 */
+	public void refreshPieceList(){
+		whitePieces.clear();
+		blackPieces.clear();
+		for(int i = 0; i < 8; i++){
+			for(int j = 0; j < 8; j++){
+				Piece p = getPiece(i, j); // Make sure not blank
+				if(!p.getColor().equalsIgnoreCase("blank")){
+					if(p.getColor().equalsIgnoreCase("white"))
+						whitePieces.add(p);
+					else if(p.getColor().equalsIgnoreCase("black"))
+						blackPieces.add(p);
+				}
+			}
+		}
+	}
+	
+	public void printPieceList(){
+		refreshPieceList();
+		System.out.print("White pieces: ");
+		for(int i = 0; i < whitePieces.size(); i++){
+			System.out.print(whitePieces.get(i).toString() + " ");
+		}
+		System.out.println("\nWhite piece count: " + whitePieces.size());
+		System.out.print("Black pieces: ");
+		for(int i = 0; i < blackPieces.size(); i++){
+			System.out.print(blackPieces.get(i).toString() + " ");
+		}
+		System.out.println("\nBlack piece count: " + blackPieces.size());
+	}
+	
+	public ArrayList<Piece> getWhitePieces() {
+		refreshPieceList();
+		return whitePieces;
+	}
+	
+	public ArrayList<Piece> getBlackPieces() {
+		refreshPieceList();
+		return blackPieces;
+	}
+	
+	public ArrayList<Piece> getAllPieces() {
+		refreshPieceList();
+		ArrayList<Piece> p = whitePieces;
+		p.addAll(blackPieces);
+		return p;
+	}
+	
 }
