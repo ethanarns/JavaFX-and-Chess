@@ -334,11 +334,6 @@ public class ChessBoard {
 			return false;
 		}
 
-		//capture logic
-		boolean placeIsEnemy = false;
-		//if it ISNT blank and it ISNT the same color
-		if(!newPiece.getColor().equalsIgnoreCase("Blank") && !newPiece.getColor().equalsIgnoreCase(p.getColor()))
-			placeIsEnemy = true;//The spot is an enemy piece!
 		if(!moveCheckAssigner(p,x,y)){
 			if(verbose)
 				System.out.println("Bad move! Illegal move for " + p.getClass().getSimpleName() + ".");
@@ -367,8 +362,7 @@ public class ChessBoard {
 	
 	
 	/**
-	 * Attempts to move a piece to the set parameters. Also determines capture.
-	 * Returns true if successful.
+	 * Attempts to move a piece to the set parameters. Returns true if success.
 	 * 
 	 * @param p  the piece selected to be moved
 	 * @param x  x position to attempt to move to
@@ -395,8 +389,11 @@ public class ChessBoard {
 	 * @return       true if valid move
 	 */
 	protected boolean moveCheckAssigner(Piece p, int relX, int relY){
-		if(p instanceof Blank)
-			System.out.println("Blank spaces cannot be moved.");
+		if(p instanceof Blank){
+			if(isDebug())
+				System.out.println("Blank spaces cannot be moved.");
+			return false;
+		}
 		else if(p instanceof Pawn)
 			return moveCheck_pawn(p, relX, relY);
 		else if(p instanceof Rook)
@@ -409,7 +406,7 @@ public class ChessBoard {
 			return moveCheck_queen(p, relX, relY);
 		else if(p instanceof Knight)
 			return moveCheck_knight(p, relX, relY);
-		return false;//What happened?
+		return false; // Something is very wrong
 	}
 
 	

@@ -34,7 +34,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import us.pecon.ray.chessPlay.Bishop;
 import us.pecon.ray.chessPlay.Blank;
-import us.pecon.ray.chessPlay.ChessBoard;
 import us.pecon.ray.chessPlay.ChessBoard_ai;
 import us.pecon.ray.chessPlay.King;
 import us.pecon.ray.chessPlay.Knight;
@@ -258,7 +257,13 @@ public class ChessPlayGui extends Application {
 			for(int i = 0; i < moveList.size(); i++)
 				moves.getChildren().add(new Text(moveList.get(i)));
 		}
-		
+		/*
+		 * TEST HERE
+		 */
+		System.out.println(chess.isInCheck("white"));
+		/*
+		 * END TEST
+		 */
 	}
 	
 	/**
