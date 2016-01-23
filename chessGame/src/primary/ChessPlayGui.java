@@ -35,6 +35,7 @@ import javafx.stage.Stage;
 import us.pecon.ray.chessPlay.Bishop;
 import us.pecon.ray.chessPlay.Blank;
 import us.pecon.ray.chessPlay.ChessBoard;
+import us.pecon.ray.chessPlay.ChessBoard_ai;
 import us.pecon.ray.chessPlay.King;
 import us.pecon.ray.chessPlay.Knight;
 import us.pecon.ray.chessPlay.Pawn;
@@ -69,7 +70,7 @@ public class ChessPlayGui extends Application {
 	private Position selectedSquare;
 	private boolean lookingForMove;
 	
-	private ChessBoard chess;
+	private ChessBoard_ai chess;
 	
 	private SoundManager playSound;
 	private boolean muted;
@@ -86,7 +87,7 @@ public class ChessPlayGui extends Application {
 	@Override
 	public void init(){
 		//initialize the chess API
-		chess = new ChessBoard();
+		chess = new ChessBoard_ai();
 		chess.setDebug(false);
 		chess.resetBoard();
 		
@@ -257,6 +258,7 @@ public class ChessPlayGui extends Application {
 			for(int i = 0; i < moveList.size(); i++)
 				moves.getChildren().add(new Text(moveList.get(i)));
 		}
+		
 	}
 	
 	/**

@@ -62,7 +62,7 @@ public abstract class Piece {
 	
 	/**
 	 * Gets Y position as Cartesian coordinate
-	 * @return
+	 * @return   Piece's Y location
 	 */
 	public int getYpos(){
 		return this.position.getYpos();

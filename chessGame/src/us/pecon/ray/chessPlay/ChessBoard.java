@@ -14,8 +14,6 @@ public class ChessBoard {
 	
 	protected Piece boardMatrix[][];
 	protected String currentTurn;
-	private ArrayList<Piece> defeatedPieces;
-	protected boolean isGameOver;
 	protected boolean verbose;
 
 	protected ArrayList<Piece> blackPieces;
@@ -33,13 +31,12 @@ public class ChessBoard {
 			}
 		}
 		currentTurn = "White";
-		defeatedPieces = new ArrayList<Piece>();
 		blackPieces = new ArrayList<Piece>();
 		whitePieces = new ArrayList<Piece>();
-		
-		isGameOver = false;
+
 		verbose = false;
 	}
+	
 	
 	/**
 	 * Sets debug mode. If on, System will print messages showing moves, errors,
@@ -54,6 +51,7 @@ public class ChessBoard {
 			verbose = false;
 	}
 	
+	
 	/**
 	 * Getter for debug mode.
 	 * 
@@ -63,28 +61,6 @@ public class ChessBoard {
 		return verbose;
 	}
 	
-	/**
-	 * A simple function for providing info to the players. Prints out a lot of
-	 * text via System.out, so won't work if only GUI is available.
-	 */
-	public void help_console(){
-		System.out.println("> Move type is Algebraic notation. For\n"
-				+ "example, to move a white pawn up twice,\n"
-				+ "one way to do it would be with this:\n"
-				+ "> E2-E4");
-		System.out.println("> To show the pieces which have been\n"
-				+ "defeated, type 'defeated'");
-		System.out.println("> To quit, type 'quit'");
-		System.out.println("> Easy right? Now get to playing!");
-	}
-	
-	/**
-	 * A getter used to see if the game should end.
-	 * @return   boolean of whether or not to end the game
-	 */
-	public boolean isGameOver(){
-		return isGameOver;
-	}
 	
 	/**
 	 * Returns the current turn as a String
@@ -93,6 +69,7 @@ public class ChessBoard {
 	public String getTurn(){
 		return currentTurn;
 	}
+	
 	
 	/**
 	 * Changes the turn to the opposite of what it currently is. If turn is
@@ -111,6 +88,7 @@ public class ChessBoard {
 		}
 	}
 	
+	
 	/**
 	 * Retrieves piece at coordinate location
 	 * @param x       the x coordinate
@@ -126,6 +104,7 @@ public class ChessBoard {
 		return x > 7 || x < 0 || y > 7 || y < 0 ? null : boardMatrix[x][y];
 	}
 	
+	
 	/**
 	 * Retrieves piece at Position class location
 	 * @param pos     the position object to retrieve located piece
@@ -139,6 +118,7 @@ public class ChessBoard {
 		}
 		return pos.getXpos() > 7 || pos.getXpos() < 0 || pos.getYpos() > 7 || pos.getYpos() < 0 ? null : boardMatrix[pos.getXpos()][pos.getYpos()];
 	}
+	
 	
 	/**
 	 * Prints the board to Console output in ASCII format
@@ -162,54 +142,6 @@ public class ChessBoard {
 		System.out.println("\n");
 	}
 	
-	/**
-	 * Prints the board to Console output in ASCII format, but in a more human
-	 * readable and official way
-	 */
-	public void printBoardState_hr(){
-		System.out.print("  ");
-		System.out.println("A B C D E F G H");
-		for(int i = 7; i >= 0; i--){//go *backwards* through the top level
-			System.out.print(i+1 + " ");
-			for(int j = 0; j < 8; j++){//but go forwards through the sublevels
-				System.out.print(getPiece(j,i).symbol() + " ");//print in *reverse* coordinates
-			}
-			System.out.print(i+1);
-			System.out.println();
-		}
-		System.out.print("  ");
-		System.out.println("A B C D E F G H\n");
-	}
-	
-	/**
-	 * Takes in a String, and gets the single letter specified by pos. It then
-	 * converts the letter to a char, and tries to convert it to 0-7, relating
-	 * to the non-human readable chess board locations. Returns -1 as an error.
-	 * @param targetString   input string to have number pulled from
-	 * @param pos            position to grab number from
-	 * @return               returns converted number, -1 if error 
-	 */
-	private int letterToNum(String targetString, int pos){
-		if(targetString.length() <= 0){
-			if(verbose)
-				System.out.println("Invalid input. Input String cannot be 0.");
-			return -1;
-		}
-		int rightNum = -1;
-		try {
-			rightNum = Character.getNumericValue(targetString.toLowerCase().charAt(pos)) - 10;
-		} catch (Exception e) {
-			if(verbose)
-				System.out.println("Error, bad numeric value input.");
-			return -1;
-		}
-		if(rightNum < 0 || rightNum > 7){
-			if(verbose)
-				System.out.println("Translated number " + rightNum + " is out of bounds.\nThe input must be A-H.");
-			return -1;
-		}
-		return rightNum;
-	}
 	
 	/**
 	 * Checks if a specified coordinates are legal on the board
@@ -217,18 +149,20 @@ public class ChessBoard {
 	 * @param y   y coordinate to check
 	 * @return    true if legal position
 	 */
-	private boolean isOnBoard(int x, int y){
+	protected boolean isOnBoard(int x, int y){
 		return !(x > 7 || x < 0 || y > 7 || y < 0);
 	}
+	
 	
 	/**
 	 * Checks if a specific Position object's position is legal on the board
 	 * @param pos  position to be checked
 	 * @return     true if legal position
 	 */
-	private boolean isOnBoard(Position pos){
+	protected boolean isOnBoard(Position pos){
 		return !(pos.getXpos() > 7 || pos.getXpos() < 0 || pos.getYpos() > 7 || pos.getYpos() < 0);
 	}
+	
 	
 	/**
 	 * Places a new piece on the ChessBoard
@@ -242,6 +176,7 @@ public class ChessBoard {
 		}
 		boardMatrix[piece.getXpos()][piece.getYpos()] = piece;
 	}
+	
 	
 	/**
 	 * Place a piece on the ChessBoard, adjusted with Position object
@@ -258,6 +193,7 @@ public class ChessBoard {
 		boardMatrix[piece.getXpos()][piece.getYpos()] = piece;
 	}
 	
+	
 	/**
 	 * Place a piece on the ChessBoard, adjusted with coordinates
 	 * @param piece   the piece object to be placed
@@ -273,6 +209,7 @@ public class ChessBoard {
 		piece.setPosition(x, y);
 		boardMatrix[piece.getXpos()][piece.getYpos()] = piece;
 	}
+	
 	
 	/**
 	 * Places all pieces in proper starting position
@@ -309,7 +246,10 @@ public class ChessBoard {
 		
 		placePiece( new King("Black",  3,7) );
 		placePiece( new Queen("Black", 4,7) );
+		
+		refreshPieceList();
 	}
+	
 	
 	/**
 	 * Returns a piece relative to the piece in question by obtaining the location
@@ -320,7 +260,7 @@ public class ChessBoard {
 	 * @param y   the left and right movement
 	 * @return    piece found at location, null if invalid
 	 */
-	private Piece getPieceRelative(Piece p, int x, int y){
+	protected Piece getPieceRelative(Piece p, int x, int y){
 		if(p.getXpos()+x > 7 || p.getXpos() < 0 || p.getYpos() > 7 || p.getYpos() < 0 || p == null){
 			if(verbose)
 				System.out.println("Invalid relative piece position.");
@@ -334,15 +274,16 @@ public class ChessBoard {
 		return getPiece(p.getXpos() + x, p.getYpos() + y);
 	}
 	
+	
 	/**
 	 * Returns a piece relative to the location specified, located by checking the
 	 * position offset by the x and y coordinate parameters
-	 * @param p  the initial piece to check from
-	 * @param x  the up and down movement
-	 * @param y  the left and right movement
-	 * @return   piece found at location, null if invalid
+	 * @param pos  the initial piece's position to check from
+	 * @param x    the up and down movement
+	 * @param y    the left and right movement
+	 * @return     piece found at location, null if invalid
 	 */
-	private Piece getPieceRelative(Position pos, int x, int y){
+	protected Piece getPieceRelative(Position pos, int x, int y){
 		if(pos.getXpos()+x > 7 || pos.getXpos() < 0 || pos.getYpos() > 7 || pos.getYpos() < 0 || pos == null){
 			if(verbose)
 				System.out.println("Invalid realative piece position.");
@@ -355,6 +296,7 @@ public class ChessBoard {
 		}
 		return getPiece(pos.getXpos() + x, pos.getYpos() + y);
 	}
+	
 	
 	/**
 	 * Moves a piece by advancing it according to the offset specified by x and
@@ -416,8 +358,6 @@ public class ChessBoard {
 		placePiece(new Blank("Blank",oldPos.getXpos(), oldPos.getYpos()));
 		if(verbose)
 			printBoardState();
-		if(placeIsEnemy)
-			capture(newPiece);
 		else{
 			if(verbose)
 				System.out.println(p.getColor() + " " + p.getClass().getSimpleName() + " moved to (" + newPiece.getXpos() + ", " + newPiece.getYpos() + ")\n");
@@ -425,210 +365,26 @@ public class ChessBoard {
 		return true;
 	}
 	
+	
 	/**
-	 * Takes in a 2 character string (not including trimmed spaces) and
-	 * converts them to a Position object representing the string's intended
-	 * position. Case insensitive.
-	 * <br>
-	 * Example: user inputs "A4". Returns Position object with x of 0 and y of
-	 * 5.
+	 * Attempts to move a piece to the set parameters. Also determines capture.
+	 * Returns true if successful.
 	 * 
-	 * @param input   String representing position in algebraic notation
-	 * @return        Position the string represents, null if error
+	 * @param p  the piece selected to be moved
+	 * @param x  x position to attempt to move to
+	 * @param y  y position to attempt to move to
+	 * @return   true if move was successful, false if not
 	 */
-	public Position textToPosition(String input){
-		input = input.trim();//Clears trailing and leading whitespaces
-		if(input.length() != 2){
-			if(verbose)
-				System.out.println("Invalid input, must be 2 characters");
-			return null;
-		}
-		int numPos = -1;
-		//numPos will be the second character, which should be a number
-		try {
-			numPos = Integer.parseInt(input.substring(1,2)) - 1;
-		} catch (NumberFormatException e) {
-			if(verbose)
-				System.out.println("Invalid input, second number is not valid.");
-			e.printStackTrace();
-			return null;
-		}
-		if(numPos > 7 || numPos < 0){
-			if(verbose)
-				System.out.println("Invalid input, second number is off board.");
-			return null;
-		}
-		//At this point numPos is either the computer readable y or null
-		//Now for the translated letter. LetterToNum will handle validity
-		int letPos = letterToNum(input, 0);
-		if(letPos == -1){
-			if(verbose)
-				System.out.println("Letter position error.");
-			return null;
-		}
-		return new Position(letPos, numPos);
-	}
-
-	/**
-	 * This is a separate version of move(), which instead of raw information,
-	 * takes in a String that is hopefully algebraic notation and will then
-	 * translate that to computer-friendly movement. It must check if the
-	 * notation is correct first, and will return false if not. Makes liberal
-	 * use of input checking, because users cannot be trusted.
-	 * @param move   the string that will relay the movement
-	 * @return       true if successful, false if error
-	 */
-	public boolean move_hr(String move){
-		if(move.equalsIgnoreCase("quit") || move.equalsIgnoreCase("exit")){
-			isGameOver = true;
+	public boolean moveTo(Piece p, int x, int y){
+		if(!isOnBoard(x,y) || p == null)
 			return false;
-		}
-		else if(move.equalsIgnoreCase("help")){
-			help_console();
+		int relX = x - p.getXpos();
+		int relY = y - p.getYpos();
+		if(!isOnBoard(relX,relY))
 			return false;
-		}
-		else if(move.equalsIgnoreCase("defeated")){
-			showCaptured();
-			return false;
-		}
-		//use E2-F6 for examples
-		if(move.length() != 5){
-			if(verbose)
-				System.out.println("Incorrect input length.");
-			return false;
-		}
-		if(move.charAt(2) != '-'){
-			if(verbose)
-				System.out.println("Algebraic notation must be\nseparated by a -.");
-			return false;
-		}
-		//Remember, the computer takes in positions as two ints from 0 to 7
-		int pos0 = letterToNum(move,0);//E -> 4 
-		
-		String pos1temp = move.substring(1, 2).trim();
-		int pos1 = -1;
-		try { // NEVER TRUST USER INPUT
-			pos1 = Integer.parseInt(pos1temp)-1;
-		} catch (NumberFormatException e) {
-			System.out.println("Invalid input; threw NumberFormatException.");
-			return false;
-		}
-		
-		int pos3 = letterToNum(move,3);//F -> 5
-		
-		String pos4temp = move.substring(4, 5).trim();
-		int pos4 = -1;
-		try { // NEVER TRUST USER INPUT
-			pos4 = Integer.parseInt(pos4temp)-1;
-		} catch (NumberFormatException e) {
-			System.out.println("Invalid input; threw NumberFormatException.");
-			return false;
-		}
-		
-		//now, just do move with retrieved parameters
-		if(!isOnBoard(pos0,pos1) || !isOnBoard(pos3,pos4)){
-			if(verbose)
-				System.out.println("Invalid spot. Keep within A-H and 1-8");
-			return false;
-		}
-		Piece p = getPiece(pos0, pos1);
-		int x = pos3-pos0;
-		int y = pos4-pos1;
-		
-		if(p.getColor().equalsIgnoreCase("Blank")){
-			if(verbose)
-				System.out.println("Cannot select an empty space.");
-			return false;
-		}
-		if(!p.getColor().equals(getTurn())){
-			if(verbose)
-				System.out.println("It is currently " + getTurn() + "'s turn.");
-			return false;
-		}
-		
-		if(p.getXpos() > 7 || p.getXpos() < 0 || p.getYpos() > 7 || p.getYpos() < 0 || p == null){
-			if(verbose)
-				System.out.println("Invalid piece position.");
-			return false;
-		}
-		if(p instanceof Blank){
-			if(verbose)
-				System.out.println("Bad move! You cannot move a blank space.");
-			return false;
-		}
-		//set old position (for blank placement purposes
-		Position oldPos = new Position(p.getXpos(), p.getYpos());
-		//new position, using x and y to be relative
-		Piece newPiece = getPieceRelative( p.getPosition(), x, y);
-		if(oldPos == null || newPiece == null){
-			if(verbose)
-				System.out.println("Invalid creation of pieces during move()");
-			return false;
-		}
-		//Is it the same color?
-		if(newPiece.getColor().equalsIgnoreCase(p.getColor())){
-			if(verbose)
-				System.out.println("Bad move! Can't land on same color.");
-			return false;
-		}
-
-		//capture logic
-		boolean placeIsEnemy = false;
-		//if it ISNT blank and it ISNT the same color
-		if(!newPiece.getColor().equalsIgnoreCase("Blank") && !newPiece.getColor().equalsIgnoreCase(p.getColor()))
-			placeIsEnemy = true;//The spot is an enemy piece!
-		if(!moveCheckAssigner(p,x,y)){
-			if(verbose)
-				System.out.println("Bad move! Illegal move for " + p.getClass().getSimpleName() + ".");
-			return false;
-		}
-		
-		if(newPiece instanceof King){
-			if(verbose)
-				System.out.println("Bad move! Kings cannot be captured.");
-			return false;
-		}
-		
-		//Everything checks out, so set the piece's position anew
-		p.setPosition(newPiece.getXpos(), newPiece.getYpos());
-		placePiece(p);//place it according to the new position
-		//and set the old position to a Blank place
-		placePiece(new Blank("Blank",oldPos.getXpos(), oldPos.getYpos()));
-		if(verbose)
-			printBoardState_hr();
-		pos4++;
-		if(placeIsEnemy)
-			capture(newPiece);
-		else{
-			if(verbose)
-				System.out.println(p.getColor() + " " + p.getClass().getSimpleName() + " moved to " + move.substring(3, 4).trim() + "" + pos4 + ".");
-		}
-		changeTurn();
-		return true;
+		return move(p, relX, relY);
 	}
 	
-	/**
-	 * Captures a piece, which destroys it and sends it to the Graveyard
-	 * err, off the table?
-	 * @param captured   the piece that has been captured
-	 */
-	private void capture(Piece captured){
-		if(verbose)
-			System.out.println(captured + " has been defeated!");
-		defeatedPieces.add(captured);
-	}
-	
-	/**
-	 * Prints to console a list of captured pieces
-	 */
-	public void showCaptured(){
-		System.out.println("Defeated pieces: ");
-		for(int i = 0; i < defeatedPieces.size(); i++){
-			int added = i + 1;
-			System.out.println(" " + added + ". " + defeatedPieces.get(i) + ", ");
-		}
-		System.out.println();
-	}
 	
 	/**
 	 * A small method that finds what type of piece is being checked for
@@ -656,6 +412,7 @@ public class ChessBoard {
 		return false;//What happened?
 	}
 
+	
 	/**
 	 * Returns farthest acceptable placement away from the set position
 	 * straight up, left, right, or downwards ('u','l','r','d')
@@ -663,6 +420,7 @@ public class ChessBoard {
 	 * @param y           y position of the checked position
 	 * @param dir         character representing up, down, left, or right
 	 * @param initPiece   initial piece being checked, doesn't change, just used
+	 * @param newPos      the new Position
 	 * @return            the position of either end of check or right place
 	 */
 	protected Position straightRecursive(int x, int y, char dir, Piece initPiece, Position newPos){
@@ -763,6 +521,7 @@ public class ChessBoard {
 		return null;//just in case
 	}
 	
+	
 	/**
 	 * Returns farthest acceptable diagonal placement, using multiple recursive
 	 * functions.
@@ -770,6 +529,7 @@ public class ChessBoard {
 	 * @param y           y position of the checked position
 	 * @param dir         diagonal directions as strings
 	 * @param initPiece   initial piece being checked, doesn't change, just used
+	 * @param newPos      the new Position
 	 * @return            the position of either end of check or right place
 	 */
 	protected Position diagonalRecursive(int x, int y, String dir, Piece initPiece, Position newPos){
@@ -870,6 +630,7 @@ public class ChessBoard {
 		return null;//just in case
 	}
 	
+	
 	/**
 	 * Checking movement validity for pawns. Done in ChessBoard class due to
 	 * difficulties with checking board states in subclasses
@@ -906,6 +667,7 @@ public class ChessBoard {
 		return false;
 	}
 	
+	
 	/**
 	 * A general method for checking if a rook's new position works. Sends off
 	 * p in differing directions, checking either if the correct position is on
@@ -930,6 +692,7 @@ public class ChessBoard {
 		return false;
 	}
 	
+	
 	/**
 	 * Checks in all 4 diagonal directions to see if move is legal
 	 * @param p      piece selected to be moved
@@ -949,6 +712,7 @@ public class ChessBoard {
 			return true;
 		return false;
 	}
+	
 	
 	/**
 	 * A checker for King movement. Checks the surrounding board according to
@@ -992,6 +756,7 @@ public class ChessBoard {
 		return false;
 	}
 	
+	
 	/**
 	 * A checker for Queen movement. Checks the surrounding board according to
 	 * legal moves, and returns true if it finds it.
@@ -1021,13 +786,14 @@ public class ChessBoard {
 		return false;
 	}
 	
+	
 	/**
 	 * A checker for Knight movement. Checks the surrounding board according to
 	 * legal moves, and returns true if it finds it.
-	 * @param p
-	 * @param relX
-	 * @param relY
-	 * @return
+	 * @param p      selected Piece
+	 * @param relX   relative x position to check
+	 * @param relY   relative y position to check
+	 * @return       true if can move, false if not
 	 */
 	protected boolean moveCheck_knight(Piece p, int relX, int relY){
 		Piece newPos = getPieceRelative(p, relX, relY);
@@ -1061,6 +827,10 @@ public class ChessBoard {
 	/*
 	 * Piece list utilities
 	 */
+	
+	/**
+	 * Refreshes the lists of white and black pieces
+	 */
 	public void refreshPieceList(){
 		whitePieces.clear();
 		blackPieces.clear();
@@ -1077,6 +847,10 @@ public class ChessBoard {
 		}
 	}
 	
+	
+	/**
+	 * Prints to console a list of pieces on the board
+	 */
 	public void printPieceList(){
 		refreshPieceList();
 		System.out.print("White pieces: ");
@@ -1091,16 +865,28 @@ public class ChessBoard {
 		System.out.println("\nBlack piece count: " + blackPieces.size());
 	}
 	
+	/**
+	 * Returns a list of white pieces on the board
+	 * @return   ArrayList of white pieces
+	 */
 	public ArrayList<Piece> getWhitePieces() {
 		refreshPieceList();
 		return whitePieces;
 	}
 	
+	/**
+	 * Returns a list of black pieces on the board
+	 * @return   ArrayList of black pieces
+	 */
 	public ArrayList<Piece> getBlackPieces() {
 		refreshPieceList();
 		return blackPieces;
 	}
 	
+	/**
+	 * Returns a list of all pieces on the board
+	 * @return   ArrayList of all pieces
+	 */
 	public ArrayList<Piece> getAllPieces() {
 		refreshPieceList();
 		ArrayList<Piece> p = whitePieces;
