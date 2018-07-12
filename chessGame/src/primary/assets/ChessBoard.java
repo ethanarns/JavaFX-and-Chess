@@ -1,24 +1,24 @@
-package us.pecon.ray.chessPlay;
+package primary;
 
 import java.util.ArrayList;
 
 /**
  * A class representing a chess board in which individual pieces will be placed
- * and manipulated upon. Its primary method of manipulation and containment is 
+ * and manipulated upon. Its primary method of manipulation and containment is
  * a matrix array containing individual Piece classes, which can be moved around
  * with either human readable or machine friendly commands.
- * 
+ *
  * @author Ethan Arns
  */
 public class ChessBoard {
-	
+
 	protected Piece boardMatrix[][];
 	protected String currentTurn;
 	protected boolean verbose;
 
 	protected ArrayList<Piece> blackPieces;
 	protected ArrayList<Piece> whitePieces;
-	
+
 	/**
 	 * Chess board class constructor. Sets current turn to white and initiates
 	 * the two other variables blank
@@ -36,12 +36,12 @@ public class ChessBoard {
 
 		verbose = false;
 	}
-	
-	
+
+
 	/**
 	 * Sets debug mode. If on, System will print messages showing moves, errors,
 	 * and board states.
-	 * 
+	 *
 	 * @param which   true to set debug mode on, false to disable debug mode
 	 */
 	public void setDebug(boolean which){
@@ -50,18 +50,18 @@ public class ChessBoard {
 		else
 			verbose = false;
 	}
-	
-	
+
+
 	/**
 	 * Getter for debug mode.
-	 * 
+	 *
 	 * @return   true if debug mode is on
 	 */
 	public boolean isDebug(){
 		return verbose;
 	}
-	
-	
+
+
 	/**
 	 * Returns the current turn as a String
 	 * @return a string representing the turn
@@ -69,8 +69,8 @@ public class ChessBoard {
 	public String getTurn(){
 		return currentTurn;
 	}
-	
-	
+
+
 	/**
 	 * Changes the turn to the opposite of what it currently is. If turn is
 	 * invalid, it set it to White.
@@ -87,8 +87,8 @@ public class ChessBoard {
 				System.out.println("It is now White's turn.");
 		}
 	}
-	
-	
+
+
 	/**
 	 * Retrieves piece at coordinate location
 	 * @param x       the x coordinate
@@ -103,8 +103,8 @@ public class ChessBoard {
 		}
 		return x > 7 || x < 0 || y > 7 || y < 0 ? null : boardMatrix[x][y];
 	}
-	
-	
+
+
 	/**
 	 * Retrieves piece at Position class location
 	 * @param pos     the position object to retrieve located piece
@@ -118,8 +118,8 @@ public class ChessBoard {
 		}
 		return pos.getXpos() > 7 || pos.getXpos() < 0 || pos.getYpos() > 7 || pos.getYpos() < 0 ? null : boardMatrix[pos.getXpos()][pos.getYpos()];
 	}
-	
-	
+
+
 	/**
 	 * Prints the board to Console output in ASCII format
 	 */
@@ -141,8 +141,8 @@ public class ChessBoard {
 			System.out.print(k + " ");
 		System.out.println("\n");
 	}
-	
-	
+
+
 	/**
 	 * Checks if a specified coordinates are legal on the board
 	 * @param x   x coordinate to check
@@ -152,8 +152,8 @@ public class ChessBoard {
 	protected boolean isOnBoard(int x, int y){
 		return !(x > 7 || x < 0 || y > 7 || y < 0);
 	}
-	
-	
+
+
 	/**
 	 * Checks if a specific Position object's position is legal on the board
 	 * @param pos  position to be checked
@@ -162,8 +162,8 @@ public class ChessBoard {
 	protected boolean isOnBoard(Position pos){
 		return !(pos.getXpos() > 7 || pos.getXpos() < 0 || pos.getYpos() > 7 || pos.getYpos() < 0);
 	}
-	
-	
+
+
 	/**
 	 * Places a new piece on the ChessBoard
 	 * @param piece  the piece object to be placed
@@ -176,8 +176,8 @@ public class ChessBoard {
 		}
 		boardMatrix[piece.getXpos()][piece.getYpos()] = piece;
 	}
-	
-	
+
+
 	/**
 	 * Place a piece on the ChessBoard, adjusted with Position object
 	 * @param piece     piece to place
@@ -192,8 +192,8 @@ public class ChessBoard {
 		piece.setPosition(pos);
 		boardMatrix[piece.getXpos()][piece.getYpos()] = piece;
 	}
-	
-	
+
+
 	/**
 	 * Place a piece on the ChessBoard, adjusted with coordinates
 	 * @param piece   the piece object to be placed
@@ -209,8 +209,8 @@ public class ChessBoard {
 		piece.setPosition(x, y);
 		boardMatrix[piece.getXpos()][piece.getYpos()] = piece;
 	}
-	
-	
+
+
 	/**
 	 * Places all pieces in proper starting position
 	 */
@@ -230,27 +230,27 @@ public class ChessBoard {
 		placePiece( new Rook("White",  7,0) );
 		placePiece( new Rook("Black",  0,7) );
 		placePiece( new Rook("Black",  7,7) );
-		
+
 		placePiece( new Knight("White",6,0) );
 		placePiece( new Knight("White",1,0) );
 		placePiece( new Knight("Black",6,7) );
 		placePiece( new Knight("Black",1,7) );
-		
+
 		placePiece( new Bishop("White",5,0) );
 		placePiece( new Bishop("White",2,0) );
 		placePiece( new Bishop("Black",5,7) );
 		placePiece( new Bishop("Black",2,7) );
-		
+
 		placePiece( new King("White",  3,0) );
 		placePiece( new Queen("White", 4,0) );
-		
+
 		placePiece( new King("Black",  3,7) );
 		placePiece( new Queen("Black", 4,7) );
-		
+
 		refreshPieceList();
 	}
-	
-	
+
+
 	/**
 	 * Returns a piece relative to the piece in question by obtaining the location
 	 * coordinates of the piece itself and then checking the offset set in the
@@ -273,8 +273,8 @@ public class ChessBoard {
 		}
 		return getPiece(p.getXpos() + x, p.getYpos() + y);
 	}
-	
-	
+
+
 	/**
 	 * Returns a piece relative to the location specified, located by checking the
 	 * position offset by the x and y coordinate parameters
@@ -296,12 +296,12 @@ public class ChessBoard {
 		}
 		return getPiece(pos.getXpos() + x, pos.getYpos() + y);
 	}
-	
-	
+
+
 	/**
 	 * Moves a piece by advancing it according to the offset specified by x and
 	 * y parameters. Also determines capture. Returns true if successful.
-	 * 
+	 *
 	 * @param p  the piece selected to be moved
 	 * @param x  how far left or right to move
 	 * @param y  how far up or down to move
@@ -339,13 +339,13 @@ public class ChessBoard {
 				System.out.println("Bad move! Illegal move for " + p.getClass().getSimpleName() + ".");
 			return false;
 		}
-		
+
 		if(newPiece instanceof King){
 			if(verbose)
 				System.out.println("Bad move! Kings cannot be captured.");
 			return false;
 		}
-		
+
 		//Everything checks out, so set the piece's position anew
 		p.setPosition(newPiece.getXpos(), newPiece.getYpos());
 		placePiece(p);//place it according to the new position
@@ -359,11 +359,11 @@ public class ChessBoard {
 		}
 		return true;
 	}
-	
-	
+
+
 	/**
 	 * Attempts to move a piece to the set parameters. Returns true if success.
-	 * 
+	 *
 	 * @param p  the piece selected to be moved
 	 * @param x  x position to attempt to move to
 	 * @param y  y position to attempt to move to
@@ -378,12 +378,12 @@ public class ChessBoard {
 			return false;
 		return move(p, relX, relY);
 	}
-	
-	
+
+
 	/**
 	 * A small method that finds what type of piece is being checked for
 	 * movement, then assigns and hands off the correct method to them
-	 * @param p      input piece that is being checked for relative movement  
+	 * @param p      input piece that is being checked for relative movement
 	 * @param relX   relative x movement
 	 * @param relY   relative y movement
 	 * @return       true if valid move
@@ -409,7 +409,7 @@ public class ChessBoard {
 		return false; // Something is very wrong
 	}
 
-	
+
 	/**
 	 * Returns farthest acceptable placement away from the set position
 	 * straight up, left, right, or downwards ('u','l','r','d')
@@ -444,7 +444,7 @@ public class ChessBoard {
 				return straightRecursive(x,y+1,'u',initPiece, newPos);//or just do it again 1 higher
 			}
 		}
-		
+
 		if(dir == 'd'){
 			//If the place just checked isn't a blank space...
 			if( !isOnBoard(x, y)){
@@ -469,7 +469,7 @@ public class ChessBoard {
 				return straightRecursive(x,y-1,'d',initPiece, newPos);//or just do it again 1 higher
 			}
 		}
-		
+
 		if(dir == 'l'){
 			//If the place just checked isn't a blank space...
 			if( !isOnBoard(x, y)){
@@ -492,7 +492,7 @@ public class ChessBoard {
 				return straightRecursive(x-1,y,'l',initPiece, newPos);//or just do it again 1 higher
 			}
 		}
-		
+
 		if(dir == 'r'){
 			//If the place just checked isn't a blank space...
 			if( !isOnBoard(x, y)){
@@ -517,8 +517,8 @@ public class ChessBoard {
 		}
 		return null;//just in case
 	}
-	
-	
+
+
 	/**
 	 * Returns farthest acceptable diagonal placement, using multiple recursive
 	 * functions.
@@ -553,7 +553,7 @@ public class ChessBoard {
 				return diagonalRecursive(x-1,y+1,"ul",initPiece, newPos);//or just do it again 1 higher
 			}
 		}
-		
+
 		if(dir == "dl"){
 			//If the place just checked isn't a blank space...
 			if( !isOnBoard(x, y)){
@@ -578,7 +578,7 @@ public class ChessBoard {
 				return diagonalRecursive(x-1,y-1,"dl",initPiece, newPos);//or just do it again 1 higher
 			}
 		}
-		
+
 		if(dir.equalsIgnoreCase("ur")){
 			//If the place just checked isn't a blank space...
 			if( !isOnBoard(x, y)){
@@ -601,7 +601,7 @@ public class ChessBoard {
 				return diagonalRecursive(x+1,y+1,"ur",initPiece, newPos);//or just do it again 1 higher
 			}
 		}
-		
+
 		if(dir.equalsIgnoreCase("dr")){
 			//If the place just checked isn't a blank space...
 			if( !isOnBoard(x, y)){
@@ -626,8 +626,8 @@ public class ChessBoard {
 		}
 		return null;//just in case
 	}
-	
-	
+
+
 	/**
 	 * Checking movement validity for pawns. Done in ChessBoard class due to
 	 * difficulties with checking board states in subclasses
@@ -663,8 +663,8 @@ public class ChessBoard {
 		}
 		return false;
 	}
-	
-	
+
+
 	/**
 	 * A general method for checking if a rook's new position works. Sends off
 	 * p in differing directions, checking either if the correct position is on
@@ -688,8 +688,8 @@ public class ChessBoard {
 			System.out.println("Correct position for Rook not found.");
 		return false;
 	}
-	
-	
+
+
 	/**
 	 * Checks in all 4 diagonal directions to see if move is legal
 	 * @param p      piece selected to be moved
@@ -709,8 +709,8 @@ public class ChessBoard {
 			return true;
 		return false;
 	}
-	
-	
+
+
 	/**
 	 * A checker for King movement. Checks the surrounding board according to
 	 * legal moves, and returns true if it finds it.
@@ -752,8 +752,8 @@ public class ChessBoard {
 		}
 		return false;
 	}
-	
-	
+
+
 	/**
 	 * A checker for Queen movement. Checks the surrounding board according to
 	 * legal moves, and returns true if it finds it.
@@ -782,8 +782,8 @@ public class ChessBoard {
 			return true;
 		return false;
 	}
-	
-	
+
+
 	/**
 	 * A checker for Knight movement. Checks the surrounding board according to
 	 * legal moves, and returns true if it finds it.
@@ -820,11 +820,11 @@ public class ChessBoard {
 		}
 		return false;
 	}
-	
+
 	/*
 	 * Piece list utilities
 	 */
-	
+
 	/**
 	 * Refreshes the lists of white and black pieces
 	 */
@@ -843,8 +843,8 @@ public class ChessBoard {
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Prints to console a list of pieces on the board
 	 */
@@ -861,7 +861,7 @@ public class ChessBoard {
 		}
 		System.out.println("\nBlack piece count: " + blackPieces.size());
 	}
-	
+
 	/**
 	 * Returns a list of white pieces on the board
 	 * @return   ArrayList of white pieces
@@ -870,7 +870,7 @@ public class ChessBoard {
 		refreshPieceList();
 		return whitePieces;
 	}
-	
+
 	/**
 	 * Returns a list of black pieces on the board
 	 * @return   ArrayList of black pieces
@@ -879,7 +879,7 @@ public class ChessBoard {
 		refreshPieceList();
 		return blackPieces;
 	}
-	
+
 	/**
 	 * Returns a list of all pieces on the board
 	 * @return   ArrayList of all pieces
@@ -890,5 +890,5 @@ public class ChessBoard {
 		p.addAll(blackPieces);
 		return p;
 	}
-	
+
 }

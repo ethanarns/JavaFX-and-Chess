@@ -1,21 +1,21 @@
-package us.pecon.ray.chessPlay;
+package primary;
 
 import java.util.ArrayList;
 
 /**
  * An AI version of ChessBoard.java
- * 
+ *
  * @author Ethan Arns
  */
 public class ChessBoard_ai extends ChessBoard {
-	
+
 	/**
 	 * The same as ChessBoard, but with other AI abilities
 	 */
 	public ChessBoard_ai(){
 		super();
 	}
-	
+
 	/**
 	 * Determines if inputted piece can capture what is at the position x and y
 	 * @param attacker   attacking piece
@@ -40,7 +40,7 @@ public class ChessBoard_ai extends ChessBoard {
 		else
 			return false;
 	}
-	
+
 	/**
 	 * Returns a list of pieces that can capture the selected Piece
 	 * @param target   the selected Piece
@@ -70,7 +70,7 @@ public class ChessBoard_ai extends ChessBoard {
 		}
 		return pieceList;
 	}
-	
+
 	/**
 	 * A checker for whether or not the selected piece can move
 	 * @param p   the Piece to check
@@ -79,7 +79,7 @@ public class ChessBoard_ai extends ChessBoard {
 	public boolean canMove(Piece p){
 		return canMove(p.getXpos(),p.getYpos());
 	}
-	
+
 	/**
 	 * A checker for whether or not the selected piece can move
 	 * @param x   the Piece's x position
@@ -103,7 +103,7 @@ public class ChessBoard_ai extends ChessBoard {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * A helper function for retrieving the player of set color's King. Returns
 	 * the color's King object.
@@ -127,7 +127,7 @@ public class ChessBoard_ai extends ChessBoard {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * TODO: possibleMoves
 	 * Returns a list of positions that the piece at the inputted location
@@ -140,7 +140,7 @@ public class ChessBoard_ai extends ChessBoard {
 		// Finish me
 		return null;
 	}
-	
+
 	/**
 	 * Checks if the player of set color is in check. Finds their King, and
 	 * sees if it is capturable by any pieces of the opposite color. If it can
@@ -169,7 +169,7 @@ public class ChessBoard_ai extends ChessBoard {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * TODO: Checks the player of set color for checkmate
 	 * @param color   color of player being tested for checkmate
