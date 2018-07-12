@@ -1,11 +1,11 @@
-package us.pecon.ray.chessPlay;
+package primary;
 
 public class King extends Piece {
-	
+
 	public King(String color, int xPos, int yPos){
 		super(color, xPos, yPos);
 	}
-	
+
 	public King(String color, Position position){
 		super(color, position);
 	}

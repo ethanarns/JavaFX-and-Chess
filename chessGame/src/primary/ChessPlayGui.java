@@ -32,23 +32,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import us.pecon.ray.chessPlay.Bishop;
-import us.pecon.ray.chessPlay.Blank;
-import us.pecon.ray.chessPlay.ChessBoard_ai;
-import us.pecon.ray.chessPlay.King;
-import us.pecon.ray.chessPlay.Knight;
-import us.pecon.ray.chessPlay.Pawn;
-import us.pecon.ray.chessPlay.Piece;
-import us.pecon.ray.chessPlay.Position;
-import us.pecon.ray.chessPlay.Queen;
-import us.pecon.ray.chessPlay.Rook;
 
 /**
  * I have officially begun using GitHub, and this lame, un-original little
  * project will be my first go at it. It is essentially playing with creation
  * of a well-documented API, then being used in a graphical interface. Pretty
  * pointless, but a good test of proper coding conventions.
- * 
+ *
  * @author ethanarns
  */
 public class ChessPlayGui extends Application {
@@ -59,25 +49,25 @@ public class ChessPlayGui extends Application {
 	private VBox moves;
 	private ArrayList<String> moveList;
 	private int turnNumber;
-	
+
 	private Button exitButton;
 	private Button muteButton;
 	private Button resetButton;
 	private Button saveButton;
 	private Button loadButton;
-	
+
 	private Position selectedSquare;
 	private boolean lookingForMove;
-	
+
 	private ChessBoard_ai chess;
-	
+
 	private SoundManager playSound;
 	private boolean muted;
 
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
+
 	/**
 	 * This class is everything called after the main method calls launch().
 	 * You cannot do any actual work with the stage itself here, but for
@@ -89,15 +79,15 @@ public class ChessPlayGui extends Application {
 		chess = new ChessBoard_ai();
 		chess.setDebug(false);
 		chess.resetBoard();
-		
+
 		playSound = new SoundManager();
 		playSound.setVolume(1.0);//Maximum volume
 		muted = false;
-		
+
 		if(chess.isDebug())
 			System.out.println("Pre-initialization complete.");
 	}
-	
+
 	/**
 	 * The method that actually starts the gui. Do all Stage construction here,
 	 * and do other initializations in the init() method
@@ -153,12 +143,12 @@ public class ChessPlayGui extends Application {
 				}
 	    	}
 	    );
-	    
+
 	    primaryStage.show();
-	    
+
 	    updateBoard();
 	}
-	
+
 	/**
 	 * Graphical initialization of the toolbar. Assumes toolbar is declared but
 	 * not initialized, as well as the buttons
@@ -173,7 +163,7 @@ public class ChessPlayGui extends Application {
             }
         });
 		exitButton.setAlignment(Pos.BOTTOM_RIGHT);
-		
+
 		muteButton = new Button("Mute");
 		muteButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -190,7 +180,7 @@ public class ChessPlayGui extends Application {
                 }
             }
         });
-		
+
 		resetButton = new Button("Reset");
 		resetButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -207,13 +197,13 @@ public class ChessPlayGui extends Application {
             		System.out.println("Board reset.");
             }
         });
-		
+
 		saveButton = new Button("Save");
 		//saveButton moved to primary loader for stage variable
-		
+
 		loadButton = new Button("Load");
 		//loadButton moved to primary loader for stage variable
-		
+
 		toolbar = new ToolBar(
 			exitButton,
 			muteButton,
@@ -226,7 +216,7 @@ public class ChessPlayGui extends Application {
 		toolbar.setMaxHeight(size);
 		toolbar.setMinHeight(size);
 	}
-	
+
 	/**
 	 * Graphical initialization of moves pane. Assumes moves is not initialized
 	 * but that it has been declared
@@ -239,12 +229,12 @@ public class ChessPlayGui extends Application {
 	    moves.setMinWidth(240);
 	    turnNumber = 1;
 	}
-	
+
 	/**
 	 * Updates the move list on the right side with the input string. If it
 	 * would overflow, it removes the first and reprints in order to give it a
 	 * scrolling effect.
-	 * 
+	 *
 	 * @param output   string that should be added to move list pane
 	 */
 	public void printMove(String output){
@@ -265,12 +255,12 @@ public class ChessPlayGui extends Application {
 		 * END TEST
 		 */
 	}
-	
+
 	/**
 	 * Translates a click somewhere on the board GridePane into a computer-
 	 * friendly chess location as a Position object. Checks if click is
 	 * inside the boundaries, returns null if not on a square.
-	 * 
+	 *
 	 * @param eventX   the event.getX() input
 	 * @param eventY   the event.getY() input
 	 * @return         adjusted position if valid, null if invalid
@@ -285,7 +275,7 @@ public class ChessPlayGui extends Application {
 		int y = ((int) (eventY - padding))/60;
 		return new Position(x, 7-y);
 	}
-	
+
 	/**
 	 * This should be called upon a square being clicked on the board pane. It
 	 * first does a bunch of input tests, then checks if the click itself is
@@ -295,13 +285,13 @@ public class ChessPlayGui extends Application {
 	 * <br>
 	 * It also works with the move history list, and prints the move. It also
 	 * checks for piece capture, and will also print that to the history list.
-	 * 
+	 *
 	 * @param pos   the position of the square clicked
 	 */
 	public void squareClicked(Position pos){
 		if(chess.isDebug())
 			System.out.println("Looking for move is " + lookingForMove);
-		
+
 		if(pos == null)
 			return;
 		if(pos.getXpos() > 7 || pos.getXpos() < 0 || pos.getYpos() > 7 || pos.getYpos() < 0)
@@ -338,7 +328,7 @@ public class ChessPlayGui extends Application {
 			//first, get piece that is piece of prior selected square
 			Piece currentPiece = chess.getPiece(selectedSquare);
 			Position prePos = currentPiece.getPosition();
-			
+
 			//setup capture logic
 			boolean isNewSquareEnemy = false;
 			String newSquareColor = chess.getPiece(pos).getColor();
@@ -353,7 +343,7 @@ public class ChessPlayGui extends Application {
 				if(newSquareColor.equalsIgnoreCase("white"))
 					isNewSquareEnemy = true;
 			}
-			
+
 			//Now the actual move check
 			if(!chess.move(currentPiece, pos.getXpos() - prePos.getXpos(), pos.getYpos() - prePos.getYpos())){
 				if(chess.isDebug())
@@ -362,20 +352,20 @@ public class ChessPlayGui extends Application {
 				return;
 			}
 			//Move done, do updates
-			
+
 			updateBoard();
 			lookingForMove = false;
 			selectedSquare.setXpos(-1);
 			selectedSquare.setYpos(-1);
 			chess.changeTurn();
 			printMove("" + turnNumber + ". " + chess.getPiece(pos).getColor() +
-					" " + chess.getPiece(pos).getClass().getSimpleName() + 
+					" " + chess.getPiece(pos).getClass().getSimpleName() +
 					" moved to (" + (pos.getXpos()+1) + ", " + (pos.getYpos()+1) + ")");
 			turnNumber++;
 			if(isNewSquareEnemy){
 				if(chess.isDebug())
 					System.out.println("The new square was an enemy!");
-				printMove("" + newSquareColor + " " + newSquareName + " at (" + 
+				printMove("" + newSquareColor + " " + newSquareName + " at (" +
 					(pos.getXpos()+1) + ", " + (pos.getYpos()+1) + ") defeated!");
 				playSound.slash();
 			}
@@ -391,13 +381,13 @@ public class ChessPlayGui extends Application {
 			return;
 		}
 	}
-	
+
 	/**
 	 * A method that sets the square at the selected color to an appropriate
 	 * selection color. It first updates the board, as to clear any other
 	 * selection colors. The fill color is Color.LIGHTGRAY, the stroke is
 	 * Color.GRAY.
-	 * 
+	 *
 	 * @param pos   position to set to select color
 	 */
 	public void setSquareSelectedColor(Position pos){
@@ -416,7 +406,7 @@ public class ChessPlayGui extends Application {
 		if(!symbol.equalsIgnoreCase(" _"))
 			board.add(tempText, pos.getXpos()+1, 8-pos.getYpos());
 	}
-	
+
 	/**
 	 * Initializes the board variable as a GridPane. It then adds in graphics
 	 * representing blank spaces, sets the mouse event for square click
@@ -444,18 +434,18 @@ public class ChessPlayGui extends Application {
 				board.add(rect, i, j);
 			}
 		}
-		
+
 		board.setOnMousePressed(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent event) {
 				squareClicked(getClickPos(event.getX(), event.getY()));
 			}//This makes it so when a square is clicked (ignoring objects
 		});//inside, it returns a proper chess coordinate as a Position object
-		
+
 		selectedSquare = new Position(-1, -1);
 		lookingForMove = false;
 	}
-	
+
 	/**
 	 * Takes the data from the existing chess matrix and places it on the
 	 * graphical board object
@@ -480,7 +470,7 @@ public class ChessPlayGui extends Application {
 			}
 		}
 	}
-	
+
 	/**
 	 * Resets chess matrix, then updates graphical board to reflect the change
 	 */
@@ -489,11 +479,11 @@ public class ChessPlayGui extends Application {
 		board.getChildren().clear();
 		updateBoard();
 	}
-	
+
 	/**
 	 * Places a Piece object onto the chess matrix, then updates the board to
 	 * reflect that
-	 * 
+	 *
 	 * @param p   piece to place
 	 */
 	public void placePiece(Piece p){
@@ -501,11 +491,11 @@ public class ChessPlayGui extends Application {
 		chess.placePiece(p);
 		updateBoard();
 	}
-	
+
 	/**
 	 * Converts symbol of input String to actual chess character to be placed
 	 * on the board
-	 * 
+	 *
 	 * @param input   input string
 	 * @return        string that is an actual chess graphic, or empty space
 	 */
@@ -536,7 +526,7 @@ public class ChessPlayGui extends Application {
 			return "♙";
 		return " ";
 	}
-	
+
 	public Piece getSavedPiece(String symbol, int x, int y){
 		if(symbol.length() != 1){
 			if(chess.isDebug())
@@ -569,7 +559,7 @@ public class ChessPlayGui extends Application {
 			return new Pawn("White",   x, y);
 		return new Blank("Blank",      x, y);
 	}
-	
+
 	/**
 	 * A safe method of stopping. System.exit() works too, but with
 	 * Platform.exit(), this little method gets called, and allows for things
@@ -581,11 +571,11 @@ public class ChessPlayGui extends Application {
 		if(chess.isDebug())
 			System.out.println("Safely stopping.");
 	}
-	
+
 	/*
 	 * File utilities
 	 */
-	
+
 	public void loadFile(File file) throws IOException{
 		if(file == null)
 			return;
@@ -651,10 +641,10 @@ public class ChessPlayGui extends Application {
 		while((moveLine = reader.readLine()) != null){
 			printMove(moveLine);
 		}
-		
+
 		reader.close();
 	}
-	
+
 	public void saveFile(File file) throws IOException{
 		if(file == null)
 			return;
@@ -688,5 +678,5 @@ public class ChessPlayGui extends Application {
 		if(chess.isDebug())
 			System.out.println("File \'" + file.getName() + "\' has been saved.");
 	}
-	
+
 }
