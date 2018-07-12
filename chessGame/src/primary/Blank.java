@@ -1,4 +1,5 @@
-package primary.assets;
+package primary;
+import primary.Position;
 
 public class Blank extends Piece {
 

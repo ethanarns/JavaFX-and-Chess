@@ -32,16 +32,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import us.pecon.ray.chessPlay.Bishop;
-import us.pecon.ray.chessPlay.Blank;
-import us.pecon.ray.chessPlay.ChessBoard_ai;
-import us.pecon.ray.chessPlay.King;
-import us.pecon.ray.chessPlay.Knight;
-import us.pecon.ray.chessPlay.Pawn;
-import us.pecon.ray.chessPlay.Piece;
-import us.pecon.ray.chessPlay.Position;
-import us.pecon.ray.chessPlay.Queen;
-import us.pecon.ray.chessPlay.Rook;
 
 /**
  * I have officially begun using GitHub, and this lame, un-original little
