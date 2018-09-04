@@ -16,10 +16,10 @@ public class SoundManager {
 	 * to do in the Main class, and also better organizationally.
 	 */
 	public SoundManager(){
-		clickSound = new AudioClip(new File("../sounds/click0.wav").toURI().toString());
-		errorSound = new AudioClip(new File("../sounds/error0.wav").toURI().toString());
-		placeSound = new AudioClip(new File("../sounds/placeSuccess.wav").toURI().toString());
-		slashSound = new AudioClip(new File("../sounds/slash.wav").toURI().toString());
+		clickSound = new AudioClip(new File("./sounds/click0.wav").toURI().toString());
+		errorSound = new AudioClip(new File("./sounds/error0.wav").toURI().toString());
+		placeSound = new AudioClip(new File("./sounds/placeSuccess.wav").toURI().toString());
+		slashSound = new AudioClip(new File("./sounds/slash.wav").toURI().toString());
 	}
 
 	/**

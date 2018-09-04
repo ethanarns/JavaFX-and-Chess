@@ -34,10 +34,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
- * I have officially begun using GitHub, and this lame, un-original little
- * project will be my first go at it. It is essentially playing with creation
- * of a well-documented API, then being used in a graphical interface. Pretty
- * pointless, but a good test of proper coding conventions.
+ * A simple chess game using JavaFX.
  *
  * @author ethanarns
  */
@@ -250,7 +247,7 @@ public class ChessPlayGui extends Application {
 		/*
 		 * TEST HERE
 		 */
-		System.out.println(chess.isInCheck("white"));
+		//System.out.println(chess.isInCheck("white"));
 		/*
 		 * END TEST
 		 */
