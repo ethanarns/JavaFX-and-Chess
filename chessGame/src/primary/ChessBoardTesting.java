@@ -23,6 +23,29 @@ public class ChessBoardTesting {
 	public void testIsOnBoardPosition() {
 		Position pos = new Position(0,0);
 		assertTrue(board.isOnBoard(pos));
+		pos.xPos = 20;
+		assertFalse(board.isOnBoard(pos));
+	}
+	
+	@Test
+	public void testGetPieceIntInt() {
+		assertNull(board.getPiece(-1,0));
+		assertTrue(board.getPiece(3, 3) instanceof Blank);
+		assertTrue(board.getPiece(0, 0) instanceof Rook);
+	}
+	
+	@Test
+	public void testMovesPieceintInt() {
+		assertFalse(board.move(board.getPiece(0, 0), 1, 1));
+		assertTrue(board.moveTo(board.getPiece(1, 1), 1, 2));
+		assertFalse(board.move(board.getPiece(1, 1), 1, 1));
+	}
+	
+	@Test
+	public void testGetTurn() {
+		assertEquals(board.getTurn(), "White");
+		board.changeTurn();
+		assertEquals(board.getTurn(), "Black");
 	}
 
 }
