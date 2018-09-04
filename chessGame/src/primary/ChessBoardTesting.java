@@ -54,4 +54,11 @@ public class ChessBoardTesting {
 		assertEquals(board.getBlackPieces().size(), 16);
 		assertEquals(board.getWhitePieces().size(), 16);
 	}
+	
+	@Test
+	public void testGetRelativePieces() {
+		Pawn p = (Pawn)board.getPiece(1, 1);
+		assertTrue(board.getPieceRelative(p, 0, -1) instanceof Knight);
+		assertFalse(board.getPieceRelative(p, 0, 1) instanceof Knight);
+	}
 }
