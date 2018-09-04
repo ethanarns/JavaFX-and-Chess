@@ -47,5 +47,11 @@ public class ChessBoardTesting {
 		board.changeTurn();
 		assertEquals(board.getTurn(), "Black");
 	}
-
+	
+	@Test
+	public void testGetPieces() {
+		assertEquals(board.getAllPieces().size(), 32);
+		assertEquals(board.getBlackPieces().size(), 16);
+		assertEquals(board.getWhitePieces().size(), 16);
+	}
 }
